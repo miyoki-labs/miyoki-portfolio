@@ -38,6 +38,7 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API", "bi-gram検索（依存ゼロ）"],
     result:
       "「AIが当てずっぽうで答えていない」を根拠スタンプで視覚的に証明。商談で画面を見せた瞬間に伝わる強さがある。本番は Embeddings＋ベクトルDB へ拡張可能。",
+    links: { repo: "https://github.com/Miyoki347/accounting-tax-rag-demo" },
   },
   {
     slug: "proposal-generator",
@@ -53,7 +54,10 @@ export const works: Work[] = [
       "下書き生成をAIに任せ、最終調整は人が握る。完全自動ではなく「人が直す前提の高速化」に振る。",
     tech: ["Next.js", "TypeScript", "Claude API"],
     result: "繰り返しの文書作成を短縮。営業支援モジュールとして転用余地が大きい。",
-    links: { demo: "https://proposal-generator-sand.vercel.app/" },
+    links: {
+      demo: "https://proposal-generator-sand.vercel.app/",
+      repo: "https://github.com/Miyoki347/proposal-generator",
+    },
   },
   {
     slug: "writing-assistant",
@@ -71,6 +75,7 @@ export const works: Work[] = [
     tech: ["React", "TypeScript", "Claude API（ストリーミング）"],
     result:
       "「続かない発信」を仕組みで支える方向の実装。後述のブログ自動化パイプラインの土台にもなっている。",
+    links: { repo: "https://github.com/Miyoki347/writing-assistant" },
   },
   {
     slug: "miyoki-media-pipeline",
@@ -105,6 +110,7 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API"],
     result:
       "現場の定型対応をAIで支える実例。電話・SMS応対の自動化へ展開できる。",
+    links: { repo: "https://github.com/Miyoki347/teleapo-demo" },
   },
   {
     slug: "numeric-counter",
