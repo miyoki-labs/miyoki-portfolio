@@ -34,9 +34,9 @@ export default function ScrollObserver() {
     targets.forEach((el) => observer.observe(el));
     win.__nbReveal = true;
 
-    // 遷移直後に IntersectionObserver が発火しないケースの保険：
-    // 少し後にビューポート内の未表示要素を一括で出す。
-    const failsafe = window.setTimeout(() => {
+    // ビューポート内の未表示 .fade-in を一括で出すスイープ。
+    // 全部出きったらスクロール監視も解除する。
+    const revealInView = () => {
       document
         .querySelectorAll<HTMLElement>(".fade-in:not(.is-visible)")
         .forEach((el) => {
@@ -45,11 +45,33 @@ export default function ScrollObserver() {
             el.classList.add("is-visible");
           }
         });
-    }, 300);
+      if (document.querySelectorAll(".fade-in:not(.is-visible)").length === 0) {
+        window.removeEventListener("scroll", onScroll);
+        window.removeEventListener("resize", onScroll);
+      }
+    };
+
+    // 遷移直後に IntersectionObserver が発火しないケースの保険。
+    const failsafe = window.setTimeout(revealInView, 300);
+
+    // 高速スクロール等で Observer が取りこぼしても、スクロール/リサイズで確実に出す（rAFで間引き）。
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(() => {
+        ticking = false;
+        revealInView();
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
 
     return () => {
       observer.disconnect();
       window.clearTimeout(failsafe);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
     };
   }, [pathname]);
 

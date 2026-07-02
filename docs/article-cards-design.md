@@ -10,7 +10,8 @@
 - 既存「発信（CHANNELS）」のリンクボタンは残し、その上に**最新記事カード**を追加する。
 - **ビルド時に取得して静的HTMLに焼き込む**（`next.config.mjs` の `output: "export"` と整合。実行時の外部依存ゼロ＝事故らない）。
 - 取得失敗してもビルドを止めない（**フェイルセーフ**。Cloudflareの「初回真っ白」回避と同じ思想）。
-- 対象3媒体: **Zenn / Qiita / note**。Xは記事APIが弱いので従来どおりリンクのみ。
+- 自動カードの対象は **Zenn / Qiita / note** の3媒体（いずれもビルド時にJSON/RSSで取得可能）。
+- **Xはカード化しない**：無料の記事取得APIが無く、埋め込みウィジェットも重い。`@miyoki_labs` への**フォローボタン**として目立たせる（SNS経由のリード導線も兼ねる）。
 
 ---
 
@@ -32,9 +33,12 @@ npm run build ─┬─ Zenn  API (JSON) ┐
 
 | 媒体 | 取得先 | 形式 | 使うフィールド |
 |---|---|---|---|
-| Zenn | `https://zenn.dev/api/articles?username=miyoki347&order=latest` | JSON | `title` / `emoji` / `liked_count` / `published_at` / `path`（URL=`https://zenn.dev`+path） |
-| Qiita | `https://qiita.com/api/v2/users/Miyoki347/items?per_page=10` | JSON | `title` / `url` / `likes_count` / `created_at` |
-| note | `https://note.com/miyoki_music/rss` | XML(RSS2.0) | `<item>` の `title` / `link` / `pubDate`（titleはCDATA） |
+| Zenn | `https://zenn.dev/api/articles?username=miyoki_labs&order=latest` | JSON | `title` / `emoji` / `liked_count` / `published_at` / `path`（URL=`https://zenn.dev`+path） |
+| Qiita | `https://qiita.com/api/v2/users/miyoki_labs/items?per_page=10` | JSON | `title` / `url` / `likes_count` / `created_at` |
+| note | `https://note.com/miyoki_labs/rss` | XML(RSS2.0) | `<item>` の `title` / `link` / `pubDate`（titleはCDATA） |
+
+> ハンドルは **Miyoki Labs 人格**に全統一（X/note/Zenn/Qiita=`miyoki_labs`、GitHub=`miyoki-labs`、表示名=`Miyoki Labs`）。
+> 上記URLのユーザー名は**リネーム後**の `miyoki_labs` 前提。各アカウントのリネーム/有効化が済むまで、該当ソースは空配列でフェイルセーフ。
 
 - Zennは非公式APIだが安定。Qiitaは公式API（未認証60req/h、ビルド時1回なので余裕）。
 - note RSSはCDATAを含むため、正規表現ではなく **`fast-xml-parser`** でパースする（軽量・CDATA安全）。
@@ -88,24 +92,18 @@ export async function getArticles(limit = 6): Promise<Article[]> {
 
 ---
 
-## 6. 鮮度＝週次自動更新（Cloudflare Deploy Hook）
+## 6. 鮮度＝再デプロイで更新（※Deploy Hookは使えない）
 
-静的なので再ビルドで更新。**金曜のネタ収集ルーティンと一緒に週1で再デプロイ**して最新化する。
+このPagesは **wrangler 直アップ型**（Git連携なし。`npm run deploy` = `next build` → `wrangler pages deploy`）。
+**Cloudflare Deploy Hookはビルドがある Git連携プロジェクト専用**なので、この構成では使えない。よって記事カードの更新＝**ローカルで再ビルド＆デプロイ**するしかない。
 
-手順:
-1. Cloudflare Pages → プロジェクト `miyoki-portfolio` → Settings → **Deploy Hook** を作成（branch=main）。発行されるURL（POST）を控える。
-2. URLは秘匿。`C:\Miyoki\ideas\` 配下の git管理外ファイル（例 `_deploy-hook.txt`）に保存し、`_run-seed-scan.ps1` から読んで叩く。
-3. `_run-seed-scan.ps1` の末尾に追記（スキャン追記が終わった後）:
-   ```powershell
-   $hookFile = Join-Path $root 'ideas\_deploy-hook.txt'
-   if (Test-Path $hookFile) {
-     $hook = (Get-Content -Raw $hookFile).Trim()
-     try { Invoke-RestMethod -Method Post -Uri $hook | Out-Null } catch {}
-   }
-   ```
-   → 毎週金曜、ネタ収集の直後にポートフォリオが再ビルドされ、記事カードが最新化される。
+方針（推奨）:
+- **記事を公開したら `npm run deploy` する運用**にする。新記事を出すたびに手動デプロイするので、そのタイミングでカードも自動的に最新化される（追加の仕組み不要＝「絞る」に合う）。
 
-> Cloudflare側のcronでも代替可能だが、既にある金曜ルーティンに相乗りするのが構成を増やさず安全。
+任意（自動化したい場合）:
+- 金曜のネタ収集ルーティン `_run-seed-scan.ps1` の末尾に `npm run deploy`（`cd C:\Miyoki\miyoki-portfolio; npm run deploy`）を足せば週次で自動リビルドできる。
+  - 注意：`npm run dev` 稼働中に走らせると `.next` が壊れる（別handoff §5）。ルーティンは22:00実行なので通常は問題ないが、devを開いていないこと。
+- 将来 GitHub→Cloudflare Pages を連携すれば、push自動デプロイ＋Deploy Hookが使えるようになる（現状は意図的に未連携）。
 
 ---
 
@@ -125,8 +123,9 @@ export async function getArticles(limit = 6): Promise<Article[]> {
 
 ---
 
-## 9. 未決・確認したいこと
+## 9. 確定した表示仕様（2026-07-01）
 
-- 表示件数（既定6件・媒体混在）でよいか／媒体ごとに均等割りにするか。
-- カードに「♡いいね数」を出すか（note はRSSに数値が無いので Zenn/Qiita のみ表示になる）。
-- 配置：「発信」セクションの上（記事を主役）か下（リンクボタンを主役）か。
+- **表示件数**：最新6件・媒体混在（`getArticles(6)`）。
+- **いいね数**：出さない（新アカウント初期は数字が小さく逆効果。タイトルで見せる）。`Article.likes` は持つが描画しない。
+- **配置**：「発信」セクション内で **記事カードを上**、その下に各媒体リンク（Xはフォローボタン）。
+- 媒体バッジ色：Zenn=青 / Qiita=緑 / note=黒寄り。

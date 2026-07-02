@@ -15,8 +15,10 @@ import {
 } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import WorkCard from "@/components/WorkCard";
+import ArticleCard from "@/components/ArticleCard";
 import { site } from "@/data/site";
 import { works } from "@/data/works";
+import { getArticles } from "@/data/articles";
 
 const strengths = [
   {
@@ -27,7 +29,7 @@ const strengths = [
   {
     icon: Sparkles,
     title: "AI活用の実践知",
-    body: "「どこをAIに任せ、どこを人が握るか」を実例で語れます。Nompassは運用までAIが主役の設計。",
+    body: "「どこをAIに任せ、どこを人が握るか」を実例で語れます。Nompassは運用までAIが主役の設計です。",
   },
   {
     icon: Boxes,
@@ -37,15 +39,27 @@ const strengths = [
   {
     icon: ShieldCheck,
     title: "誠実な設計と発信",
-    body: "誇張せず、失敗や判断の経緯まで出します。法務（景表法等）を意識した“守りの設計”も。",
+    body: "誇張せず、失敗や判断の経緯まで出します。法務（景表法等）を意識した“守りの設計”も行います。",
   },
 ];
 
 const services = [
-  { title: "RAG構築", body: "社内ナレッジ・規程・FAQを根拠つきで答えるAI。説明可能な設計。" },
-  { title: "業務特化AIアプリ", body: "提案文・執筆・現場対応など、繰り返し業務をAIで圧縮。" },
-  { title: "定型業務の自動化", body: "コンテンツ生成・文書作成などをパイプライン化して低負荷に。" },
-  { title: "AI導入相談（スポット）", body: "「何をどこまでAIに任せるか」の設計から伴走します。" },
+  {
+    title: "RAG構築",
+    body: "社内ナレッジ・規程・FAQを、根拠を示しながら答えるAI。“なぜそう答えたか”が見えるので、そのまま実務に載せられます。",
+  },
+  {
+    title: "業務特化AIアプリ",
+    body: "提案文・執筆・現場対応など、繰り返す業務をAIで圧縮。現場で“使える形”まで作り込みます。",
+  },
+  {
+    title: "定型業務の自動化",
+    body: "コンテンツ生成・文書作成をパイプライン化。続けられる低負荷な仕組みにします。",
+  },
+  {
+    title: "AI導入相談（スポット）",
+    body: "「何をどこまでAIに任せ、どこを人が握るか」。事業を自分で回した経験から、設計段階で伴走します。",
+  },
 ];
 
 const channels = [
@@ -56,8 +70,9 @@ const channels = [
   { key: "note", label: "note", icon: NotebookPen },
 ] as const;
 
-export default function Home() {
+export default async function Home() {
   const highlight = works.slice(0, 6);
+  const articles = await getArticles(6);
 
   return (
     <main>
@@ -125,10 +140,10 @@ export default function Home() {
         <FadeIn>
           <p className="font-mono text-xs text-brand-accent">STRENGTHS</p>
           <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-            制作だけ・分析だけ、ではなく。
+            制作から運用まで、一人で
           </h2>
           <p className="mt-3 max-w-2xl text-foreground/65">
-            企画から運用まで一人で通せるのが核です。その証明が、自分で立ち上げた事業 Nompass。
+            企画から運用まで一人で構築。その実践例が、Nompassです。
           </p>
         </FadeIn>
 
@@ -162,7 +177,7 @@ export default function Home() {
               <div>
                 <p className="font-mono text-xs text-brand-accent">WORKS</p>
                 <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-                  作ったもので語ります
+                  これまでの制作物
                 </h2>
               </div>
               <Link
@@ -215,7 +230,7 @@ export default function Home() {
 
         <FadeIn>
           <div className="mt-6 rounded-2xl border border-dashed border-brand/30 bg-indigo-50/40 p-6 text-sm text-foreground/70">
-            Web・HP・LP制作は、別ブランドの{" "}
+            Web・HP・LP制作は{" "}
             <a
               href={site.nompassUrl}
               target="_blank"
@@ -224,7 +239,7 @@ export default function Home() {
             >
               Nompass
             </a>{" "}
-            で承っています（テンプレ活用で速く・継続運用まで）。
+            で承っています。
           </div>
         </FadeIn>
       </section>
@@ -235,14 +250,25 @@ export default function Home() {
           <FadeIn>
             <p className="font-mono text-xs text-brand-accent">CHANNELS</p>
             <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-              つくる過程を発信しています
+              発信していること
             </h2>
             <p className="mt-3 max-w-2xl text-foreground/65">
-              開発ログ・技術解説・働き方まで。失敗や判断の経緯も含めて等身大で。
+              開発ログ（Zenn）・技術解説（Qiita）・感じたこと（note）を発信しています。失敗や判断の経緯も含めています。
             </p>
           </FadeIn>
 
-          <div className="mt-8 flex flex-wrap gap-3">
+          {articles.length > 0 && (
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {articles.map((a, i) => (
+                <FadeIn key={a.url} delay={((i % 2) + 1) as 1 | 2}>
+                  <ArticleCard article={a} />
+                </FadeIn>
+              ))}
+            </div>
+          )}
+
+          <p className="mt-10 font-mono text-[11px] text-foreground/45">ACCOUNTS</p>
+          <div className="mt-3 flex flex-wrap gap-3">
             {channels.map((c) => {
               const Icon = c.icon;
               return (
@@ -267,7 +293,7 @@ export default function Home() {
         <FadeIn>
           <div className="rounded-3xl bg-brand px-8 py-14 text-center text-white sm:px-12">
             <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-              AIで「やりたくない作業」を仕組みに。
+              「やりたくない作業」を仕組みに。
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-white/85">
               RAG・業務自動化・AIアプリ開発のご相談を承っています。まずは気軽にメールください。

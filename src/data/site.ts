@@ -15,13 +15,15 @@ export const site = {
   // Web/LP制作の送客先（別ブランド Nompass）
   nompassUrl: "https://nompass.jp",
 
+  // 全媒体で統一したハンドル（見せ場）
+  handle: "@miyoki_labs",
+
   links: {
-    github: "https://github.com/Miyoki347",
-    zenn: "https://zenn.dev/miyoki347",
-    qiita: "https://qiita.com/Miyoki347",
-    x: "https://x.com/Miyoki_Music",
-    note: "https://note.com/miyoki_music",
-    youtube: "https://www.youtube.com/@Miyoki_Music",
+    github: "https://github.com/miyoki-labs",
+    zenn: "https://zenn.dev/miyoki_labs",
+    qiita: "https://qiita.com/miyoki_labs",
+    x: "https://x.com/miyoki_labs",
+    note: "https://note.com/miyoki_labs",
   },
 } as const;
 

@@ -51,6 +51,9 @@ export default function Footer() {
                 </a>
               ))}
             </div>
+            <Link href="/links" className="font-mono text-xs text-brand-accent hover:underline">
+              各媒体はこちらで検索 → {site.handle}
+            </Link>
             <Link href="/privacy" className="text-foreground/50 hover:text-foreground">
               プライバシーポリシー
             </Link>

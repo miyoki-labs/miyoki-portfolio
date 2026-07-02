@@ -13,6 +13,15 @@ export default function JsonLd() {
     jobTitle: site.role,
     description: site.intro,
     email: `mailto:${site.email}`,
+    knowsAbout: [
+      "RAG",
+      "業務自動化",
+      "AIアプリ開発",
+      "Next.js",
+      "TypeScript",
+      "Cloudflare",
+      "Claude API",
+    ],
     ...(url ? { url } : {}),
     sameAs,
   };

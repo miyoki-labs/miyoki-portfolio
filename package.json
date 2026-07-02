@@ -9,6 +9,7 @@
     "deploy": "next build && wrangler pages deploy out --project-name miyoki-portfolio --branch main --commit-dirty=true"
   },
   "dependencies": {
+    "fast-xml-parser": "^5.9.3",
     "lucide-react": "^1.21.0",
     "next": "15.5.2",
     "react": "^19.2.7",
