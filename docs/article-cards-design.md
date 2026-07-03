@@ -101,7 +101,7 @@ export async function getArticles(limit = 6): Promise<Article[]> {
 - **記事を公開したら `npm run deploy` する運用**にする。新記事を出すたびに手動デプロイするので、そのタイミングでカードも自動的に最新化される（追加の仕組み不要＝「絞る」に合う）。
 
 任意（自動化したい場合）:
-- 金曜のネタ収集ルーティン `_run-seed-scan.ps1` の末尾に `npm run deploy`（`cd C:\Miyoki\miyoki-portfolio; npm run deploy`）を足せば週次で自動リビルドできる。
+- 金曜のネタ収集ルーティン `_run-seed-scan.ps1` の末尾に `npm run deploy`（`cd C:\Miyoki\個人\miyoki-portfolio; npm run deploy`）を足せば週次で自動リビルドできる。
   - 注意：`npm run dev` 稼働中に走らせると `.next` が壊れる（別handoff §5）。ルーティンは22:00実行なので通常は問題ないが、devを開いていないこと。
 - 将来 GitHub→Cloudflare Pages を連携すれば、push自動デプロイ＋Deploy Hookが使えるようになる（現状は意図的に未連携）。
 

@@ -8,7 +8,7 @@
 ## このプロジェクト
 
 - **プロジェクト名**: miyoki-portfolio（AIプロダクトエンジニアのポートフォリオ）
-- **パス**: `C:\Miyoki\miyoki-portfolio`
+- **パス**: `C:\Miyoki\個人\miyoki-portfolio`
 - **一言**: AI業務自動化・ツール開発の実績を見せて受託相談につなげる入口サイト（Cloudflare Pages）
 
 ## 持つレーン
