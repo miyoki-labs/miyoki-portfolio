@@ -15,3 +15,10 @@
 - 本番URL：https://miyoki-portfolio.pages.dev
 
 > ※ 未実装：問い合わせフォーム（Resend後追い）、ブログ（pipeline/microCMS連携）。ブランド統一（miyoki_labs）反映は roadmap P1。以降はこのファイルに随時追記。
+
+## 2026-07-04（`miyoki-labs.com` 取得反映）
+
+- 背景：`miyoki-labs.com` を Cloudflare Registrar で取得完了（当初はXserverドメイン迂回を計画していたが、決済不調が再試行で解消し不要になった）。ルート＝ポートフォリオ、`blog.miyoki-labs.com`＝別Astroプロジェクト（miyoki-blog）に割当。
+- 変更：`src/data/site.ts` の `siteUrl` フォールバックを `miyoki-portfolio.pages.dev` → `miyoki-labs.com` に変更、`blogUrl` フィールドを新設。`.env.local.example`／`robots.ts`／`sitemap.ts` のフォールバック値も同様に更新。`README.md` の本番URL表記・チェックリスト・「未実装」欄（ブログは別プロジェクトで実装済みのため記述を削除）を更新。
+- 追加：ブログへの導線が一切無かったため、`src/components/LinkTree.tsx`（`/links`ページ）と `src/components/layout/Footer.tsx` に Blog リンクを追加。
+- 未対応（本人作業）：Cloudflare Pagesダッシュボード側の環境変数 `NEXT_PUBLIC_SITE_URL` の明示設定（コード側フォールバックは修正済みなので必須ではない）。

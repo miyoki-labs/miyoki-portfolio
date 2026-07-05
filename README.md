@@ -26,7 +26,7 @@ npm run dev                         # http://localhost:3000
 
 ## 公開前チェック（Nompass build の作法準拠）
 
-- [ ] `NEXT_PUBLIC_SITE_URL` を本番ドメインに設定（OGP・構造化データの絶対URL）
+- [x] `NEXT_PUBLIC_SITE_URL` を本番ドメインに設定（`site.ts`のフォールバックを`miyoki-labs.com`に変更済み。Cloudflare Pages側の環境変数を明示設定するのは任意）
 - [x] `public/og.png`（1200×630）を用意（実ロゴ＋ブランド色で生成済み）
 - [x] ロゴを WebP 化（`public/logo-avatar.webp` / `public/logo-mark.webp`、元PNGは `brand/`）
 - [ ] 実績の公開URL / リポジトリ / 解説記事リンクを `works.ts` に追記
@@ -34,7 +34,7 @@ npm run dev                         # http://localhost:3000
 
 ## デプロイ（Cloudflare Pages）
 
-本番URL: https://miyoki-portfolio.pages.dev
+本番URL: https://miyoki-labs.com（旧: https://miyoki-portfolio.pages.dev）
 
 全ページ静的なので `output: "export"` で `out/` を生成し、wrangler で直接アップロードする
 （Windowsで不安定な next-on-pages は使わない）。
@@ -49,4 +49,3 @@ npm run deploy   # next build（out/生成）→ wrangler pages deploy
 ## 未実装（後追い）
 
 - 問い合わせフォーム（現状はメール＋SNSリンク。Resend導入は後で）
-- ブログ（`miyoki-media-pipeline` 連携・microCMS）

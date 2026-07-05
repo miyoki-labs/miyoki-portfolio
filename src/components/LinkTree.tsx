@@ -6,6 +6,7 @@ import { site } from "@/data/site";
 type LinkItem = { href: string; label: string; note: string };
 
 const media: LinkItem[] = [
+  { href: site.blogUrl, label: "Blog", note: "AIツール紹介" },
   { href: site.links.zenn, label: "Zenn", note: "開発ログ" },
   { href: site.links.qiita, label: "Qiita", note: "技術解説" },
   { href: site.links.github, label: "GitHub", note: "コード" },

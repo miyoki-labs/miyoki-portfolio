@@ -1,12 +1,13 @@
 import Link from "next/link";
 import { site } from "@/data/site";
 
-const channels: { key: keyof typeof site.links; label: string }[] = [
-  { key: "github", label: "GitHub" },
-  { key: "zenn", label: "Zenn" },
-  { key: "qiita", label: "Qiita" },
-  { key: "x", label: "X" },
-  { key: "note", label: "note" },
+const channels: { href: string; label: string }[] = [
+  { href: site.blogUrl, label: "Blog" },
+  { href: site.links.github, label: "GitHub" },
+  { href: site.links.zenn, label: "Zenn" },
+  { href: site.links.qiita, label: "Qiita" },
+  { href: site.links.x, label: "X" },
+  { href: site.links.note, label: "note" },
 ];
 
 export default function Footer() {
@@ -41,8 +42,8 @@ export default function Footer() {
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               {channels.map((c) => (
                 <a
-                  key={c.key}
-                  href={site.links[c.key]}
+                  key={c.label}
+                  href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-foreground/70 hover:text-brand-accent"
