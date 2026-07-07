@@ -67,9 +67,8 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
   }
 
   // 送信（Resend。未設定なら送信できないので明示エラー）
-  // ※ 一時診断：どのenvが見えているかを画面に出す（値ではなく有無のみ・原因特定後に削除）
   if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
-    return json({ error: `送信設定を確認中です（診断 R=${env.RESEND_API_KEY ? '1' : '0'} T=${env.CONTACT_TO_EMAIL ? '1' : '0'}）。少し時間をおいて再度お試しください` }, 503)
+    return json({ error: '送信を受け付けできませんでした。時間をおいて再度お試しください' }, 503)
   }
   const to = env.CONTACT_TO_EMAIL
   const from = env.CONTACT_FROM_EMAIL ?? DEFAULT_FROM
@@ -84,7 +83,7 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
       from,
       to: [to],
       reply_to: email,
-      subject: `【ポートフォリオ】お問い合わせ：${name}`,
+      subject: `【お問い合わせ】${name} 様`,
       html:
         `<p><strong>お名前</strong>：${escapeHtml(name)}</p>` +
         `<p><strong>メール</strong>：${escapeHtml(email)}</p>` +
