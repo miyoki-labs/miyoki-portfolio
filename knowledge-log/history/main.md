@@ -36,3 +36,11 @@
 - **対応**：`src/data/works.ts` の works 配列**先頭**（最も目立つ位置）に `slug: "nompass"` を追加。「作れる」だけでなく「売って・運用できる」の証明として、Map診断起点・顧客ポータル・決済・運用まで一人で構築した事業、という文脈で記述（既存の課題→作ったもの→AIの使いどころ→技術→結果の型に沿う）。`demo: https://nompass.jp`。
 - **検証**：`npx tsc --noEmit` exit 0（型OK）。🖥️**要デプロイ**（`npm run deploy`）で本番反映＝週末バッチ。
 - **教訓**：回遊は「リンクがある」ではなく「事例として見せ返す」で初めて閉じる。片方向の信頼供給だけでは循環しない。
+
+## 2026-07-07（F-1: 受託問い合わせフォーム新設＝mailto脱却・測定の器）
+
+- **背景**：監査フェーズF/Gで「Miyoki個人受託の入口がmailto依存＝ファネルが見えず需要を測れない」と判明（F-1）。SNS bioを miyoki-labs.com に更新（G-2・ハブ流入を開通）した直後なので、受け皿を先に用意するのが順序。
+- **実装**：静的export（`output:export`）＝Next API不可のため **Cloudflare Pages Functions** で構築。①`functions/api/contact.ts`（検証+HTMLエスケープ+Turnstile任意+Resend送信・**キー未設定でも壊れないgraceful**）②`src/components/ContactForm.tsx`（name/email/message＋Turnstileウィジェット任意）③`src/app/contact/page.tsx` ④home/aboutの主要CTAを mailto → `/contact` へ（末尾の直メールCTAは代替として残置）。client-Nompass-hpのContactForm/route.tsのロジックを流用。
+- **検証**：`npx tsc --noEmit` 0・`npx next build` EXIT 0（`/contact`静的生成）。
+- **残（ユーザー側・🖥️週末）**：①Cloudflare Turnstileウィジェット作成→`NEXT_PUBLIC_TURNSTILE_SITE_KEY`(ビルド時)＋`TURNSTILE_SECRET_KEY`(CF env) ②`RESEND_API_KEY`＋送信元(`CONTACT_FROM_EMAIL`=検証済みドメイン、未設定なら onboarding@resend.dev)＋`CONTACT_TO_EMAIL` ③`npm run deploy`。キー未投入でもフォームは表示され、送信時のみ「送信設定未完了」を返す（本番事故なし）。
+- **教訓**：需要検証フェーズでは「作る前に測る器」を先に置く。mailtoはファネルが見えない＝改善もできない。フォーム化は"作る"でなく"確かめる"инфраだった。

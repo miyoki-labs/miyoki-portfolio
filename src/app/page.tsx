@@ -97,13 +97,13 @@ export default async function Home() {
               {site.intro}
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a
-                href={`mailto:${site.email}`}
+              <Link
+                href="/contact"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-medium text-white hover:bg-brand-light"
               >
                 <Mail size={18} />
                 AI開発を相談する
-              </a>
+              </Link>
               <Link
                 href="/works"
                 className="inline-flex items-center gap-2 rounded-xl border border-black/10 px-6 py-3.5 text-sm font-medium hover:border-brand/40"
