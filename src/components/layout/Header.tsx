@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { Menu, X } from "lucide-react";
 import { site } from "@/data/site";
 import LinkTree from "@/components/LinkTree";
 
@@ -16,20 +17,25 @@ export default function Header() {
   const pathname = usePathname();
   const isHome = pathname === "/";
   const [linksOpen, setLinksOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link
+          href="/"
+          onClick={() => setMenuOpen(false)}
+          className="flex min-w-0 items-center gap-2.5"
+        >
           <Image
             src="/logo-avatar.webp"
             alt={`${site.name} ロゴ`}
             width={36}
             height={36}
             priority
-            className="h-9 w-9 rounded-full"
+            className="h-9 w-9 flex-shrink-0 rounded-full"
           />
-          <span className="flex items-baseline gap-2">
+          <span className="flex items-baseline gap-2 truncate">
             <span className="font-display text-lg font-semibold tracking-tight text-foreground">
               {site.name}
             </span>
@@ -39,7 +45,8 @@ export default function Header() {
           </span>
         </Link>
 
-        <nav className="flex items-center gap-1 sm:gap-2">
+        {/* デスクトップナビ（sm以上） */}
+        <nav className="hidden items-center gap-1 sm:flex sm:gap-2">
           {!isHome && (
             <Link
               href="/"
@@ -88,12 +95,53 @@ export default function Header() {
 
           <Link
             href="/contact"
-            className="ml-1 hidden rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-light sm:inline-block"
+            className="ml-1 rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-light"
           >
             相談する
           </Link>
         </nav>
+
+        {/* モバイル：メニューボタン（sm未満） */}
+        <button
+          type="button"
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label="メニュー"
+          aria-expanded={menuOpen}
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-foreground/70 hover:bg-black/5 sm:hidden"
+        >
+          {menuOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </div>
+
+      {/* モバイル：展開メニュー */}
+      {menuOpen && (
+        <nav className="border-t border-black/5 bg-white px-5 pb-3 pt-1 sm:hidden">
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              onClick={() => setMenuOpen(false)}
+              className="block rounded-lg px-2 py-2.5 text-sm text-foreground/80 hover:bg-black/5"
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            href="/links"
+            onClick={() => setMenuOpen(false)}
+            className="block rounded-lg px-2 py-2.5 text-sm text-foreground/80 hover:bg-black/5"
+          >
+            リンク集
+          </Link>
+          <Link
+            href="/contact"
+            onClick={() => setMenuOpen(false)}
+            className="mt-1 block rounded-lg bg-brand px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-brand-light"
+          >
+            相談する
+          </Link>
+        </nav>
+      )}
     </header>
   );
 }

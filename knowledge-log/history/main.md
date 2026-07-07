@@ -57,3 +57,10 @@
 - **対応**：①`functions/api/contact.ts` から受信先のハードコードを撤去し、非公開env `CONTACT_TO_EMAIL` を必須化（未設定なら送信不可） ②`ContactForm`のdone/フォールバック文からメール表示を削除 ③home末尾CTA・Footer・privacyの mailto+メール表示を `/contact` リンクへ ④`JsonLd`のemail削除 ⑤`site.ts`から`email`フィールド削除。→ `grep site.email`=0・`grep miyoki.43834`=0。未使用になった`site` importも各所除去。tsc0・build0。
 - **リンク監査（"他に機能不全がないか"）**：全hrefを洗い、内部ルート(/works /contact /privacy /links と動的/works/[slug])は全て実在＝壊れリンクなし。問題は「mailtoはPCでメール未設定だと無反応」の1類型のみで、全CTAを`/contact`へ寄せて解消。直メール表示は撤去（Gmail非公開のため）。
 - **教訓**：導線差し替えは共有レイアウト(Header/Footer/MobileFixedCTA)＋JsonLd＋data(site.ts)まで含めて`grep`で全網羅。個人アドレスは「表示」だけでなく「コード/データ/構造化データ」からも消す。受信先は非公開envに寄せる。
+
+## 2026-07-07（表示崩れ修正: モバイルヘッダーをハンバーガー化）
+
+- **発覚**：スマホでヘッダーが崩れる（ロゴ＋「←トップ」＋実績＋プロフィール＋リンク集が横並びで画面幅超過→重なり・はみ出し）。サブページでは「←トップ」も出て更に溢れていた。
+- **原因**：ナビがモバイルで折り畳まれず、全項目を横並び表示していた（レスポンシブ未対応）。
+- **修正**：`Header.tsx` を、sm以上=従来の横並びナビ／sm未満=ロゴ＋ハンバーガー(Menu/X)ボタン→展開メニュー、に分離。ロゴに`min-w-0`+`truncate`+`flex-shrink-0`で潰れ防止。tsc0・build0。
+- **教訓**：ナビ項目が増えたら（相談CTA追加等）モバイル幅の破綻を必ず実機幅で確認。折り畳み（ハンバーガー）が基本。
