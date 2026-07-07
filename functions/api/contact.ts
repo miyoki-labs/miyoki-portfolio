@@ -9,7 +9,7 @@ interface Env {
 }
 
 // 受信先はコードに置かず、非公開の env（CONTACT_TO_EMAIL）でのみ指定する
-const DEFAULT_FROM = 'Miyoki Labs <onboarding@resend.dev>'
+const DEFAULT_FROM = 'ポートフォリオ お問い合わせ <onboarding@resend.dev>'
 
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
