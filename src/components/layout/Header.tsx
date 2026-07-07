@@ -86,12 +86,12 @@ export default function Header() {
             )}
           </div>
 
-          <a
-            href={`mailto:${site.email}`}
+          <Link
+            href="/contact"
             className="ml-1 hidden rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-light sm:inline-block"
           >
             相談する
-          </a>
+          </Link>
         </nav>
       </div>
     </header>

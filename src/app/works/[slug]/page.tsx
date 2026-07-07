@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Code2, FileText } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import { works, getWork } from "@/data/works";
-import { site } from "@/data/site";
 
 export function generateStaticParams() {
   return works.map((w) => ({ slug: w.slug }));
@@ -131,12 +130,12 @@ export default async function WorkDetail({
         <p className="mt-2 text-sm text-foreground/60">
           御社のデータ・業務に合わせて設計します。
         </p>
-        <a
-          href={`mailto:${site.email}`}
+        <Link
+          href="/contact"
           className="btn-shine mt-5 inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-medium text-white hover:bg-brand-light"
         >
           相談する
-        </a>
+        </Link>
       </div>
     </main>
   );

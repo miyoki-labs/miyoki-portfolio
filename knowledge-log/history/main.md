@@ -44,3 +44,9 @@
 - **検証**：`npx tsc --noEmit` 0・`npx next build` EXIT 0（`/contact`静的生成）。
 - **残（ユーザー側・🖥️週末）**：①Cloudflare Turnstileウィジェット作成→`NEXT_PUBLIC_TURNSTILE_SITE_KEY`(ビルド時)＋`TURNSTILE_SECRET_KEY`(CF env) ②`RESEND_API_KEY`＋送信元(`CONTACT_FROM_EMAIL`=検証済みドメイン、未設定なら onboarding@resend.dev)＋`CONTACT_TO_EMAIL` ③`npm run deploy`。キー未投入でもフォームは表示され、送信時のみ「送信設定未完了」を返す（本番事故なし）。
 - **教訓**：需要検証フェーズでは「作る前に測る器」を先に置く。mailtoはファネルが見えない＝改善もできない。フォーム化は"作る"でなく"確かめる"инфраだった。
+
+## 2026-07-07（F-1追補: 相談CTAの取りこぼし修正＝ヘッダー/モバイル固定/実績詳細）
+
+- **発覚**：本番で「相談する」（ヘッダーnav）を押しても無反応、とユーザー報告＋ステータスバーに `mailto:` 表示。前回のF-1で `/contact` に変えたのは hero と about だけで、**共有レイアウトの Header.tsx・MobileFixedCTA.tsx・works/[slug] のCTAがmailtoのまま残っていた**（mailtoはメールクライアント未設定のPCで「押しても何も起きない」）。
+- **修正**：3箇所の `<a href=mailto>` → `<Link href="/contact">`。MobileFixedCTAはLink import追加＋未使用site除去、works/[slug]も未使用site import除去。tsc0・next build0。
+- **教訓**：CTA/導線を差し替えるときは、ページ本文だけでなく**共有レイアウト（Header/Footer/固定CTA）を必ずgrepで洗う**。`grep -rn "mailto:|相談する"` で全網羅してから変える。末尾の「メール直リンク」表示（page.tsx末尾・Footer）は意図的にmailto据え置き＝直メール派の受け皿。
