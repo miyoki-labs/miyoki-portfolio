@@ -19,7 +19,11 @@ export default function Footer() {
             <p className="font-display text-lg font-semibold">{site.name}</p>
             <p className="mt-1 font-mono text-xs text-brand-accent">{site.role}</p>
             <p className="mt-3 max-w-xs text-sm text-foreground/60">
-              AI業務自動化・ツール開発のご相談はメールへ。Web・LP制作は{" "}
+              AI業務自動化・ツール開発のご相談は{" "}
+              <Link href="/contact" className="text-brand-accent underline underline-offset-2">
+                お問い合わせ
+              </Link>
+              から。Web・LP制作は{" "}
               <a
                 href={site.nompassUrl}
                 className="text-brand-accent underline underline-offset-2"
@@ -33,12 +37,12 @@ export default function Footer() {
           </div>
 
           <div className="flex flex-col gap-3 text-sm">
-            <a
-              href={`mailto:${site.email}`}
+            <Link
+              href="/contact"
               className="text-foreground/70 hover:text-foreground"
             >
-              {site.email}
-            </a>
+              お問い合わせ
+            </Link>
             <div className="flex flex-wrap gap-x-4 gap-y-2">
               {channels.map((c) => (
                 <a

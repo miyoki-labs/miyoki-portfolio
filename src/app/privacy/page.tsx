@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { site } from "@/data/site";
 
 export const metadata: Metadata = {
   title: "プライバシーポリシー",
@@ -49,12 +48,12 @@ export default function PrivacyPage() {
           <p className="mt-2">
             本ポリシーに関するお問い合わせは{" "}
             <a
-              href={`mailto:${site.email}`}
+              href="/contact"
               className="text-brand-accent underline underline-offset-2"
             >
-              {site.email}
+              お問い合わせフォーム
             </a>{" "}
-            までご連絡ください。
+            よりご連絡ください。
           </p>
         </section>
 

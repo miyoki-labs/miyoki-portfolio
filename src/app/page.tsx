@@ -296,15 +296,15 @@ export default async function Home() {
               「やりたくない作業」を仕組みに。
             </h2>
             <p className="mx-auto mt-3 max-w-xl text-white/85">
-              RAG・業務自動化・AIアプリ開発のご相談を承っています。まずは気軽にメールください。
+              RAG・業務自動化・AIアプリ開発のご相談を承っています。まずは気軽にどうぞ。
             </p>
-            <a
-              href={`mailto:${site.email}`}
+            <Link
+              href="/contact"
               className="btn-shine mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-brand-accent hover:bg-white/90"
             >
               <Mail size={18} />
-              {site.email}
-            </a>
+              相談する
+            </Link>
           </div>
         </FadeIn>
       </section>

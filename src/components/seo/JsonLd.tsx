@@ -12,7 +12,6 @@ export default function JsonLd() {
     name: site.name,
     jobTitle: site.role,
     description: site.intro,
-    email: `mailto:${site.email}`,
     knowsAbout: [
       "RAG",
       "業務自動化",

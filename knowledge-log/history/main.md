@@ -50,3 +50,10 @@
 - **発覚**：本番で「相談する」（ヘッダーnav）を押しても無反応、とユーザー報告＋ステータスバーに `mailto:` 表示。前回のF-1で `/contact` に変えたのは hero と about だけで、**共有レイアウトの Header.tsx・MobileFixedCTA.tsx・works/[slug] のCTAがmailtoのまま残っていた**（mailtoはメールクライアント未設定のPCで「押しても何も起きない」）。
 - **修正**：3箇所の `<a href=mailto>` → `<Link href="/contact">`。MobileFixedCTAはLink import追加＋未使用site除去、works/[slug]も未使用site import除去。tsc0・next build0。
 - **教訓**：CTA/導線を差し替えるときは、ページ本文だけでなく**共有レイアウト（Header/Footer/固定CTA）を必ずgrepで洗う**。`grep -rn "mailto:|相談する"` で全網羅してから変える。末尾の「メール直リンク」表示（page.tsx末尾・Footer）は意図的にmailto据え置き＝直メール派の受け皿。
+
+## 2026-07-07（F-1追補2: 個人Gmailを全撤去＋残りmailto CTAを/contactへ・リンク監査）
+
+- **要望**：公開サイト/コードから個人Gmail(miyoki.43834@gmail.com)の記載を一切控えたい。
+- **対応**：①`functions/api/contact.ts` から受信先のハードコードを撤去し、非公開env `CONTACT_TO_EMAIL` を必須化（未設定なら送信不可） ②`ContactForm`のdone/フォールバック文からメール表示を削除 ③home末尾CTA・Footer・privacyの mailto+メール表示を `/contact` リンクへ ④`JsonLd`のemail削除 ⑤`site.ts`から`email`フィールド削除。→ `grep site.email`=0・`grep miyoki.43834`=0。未使用になった`site` importも各所除去。tsc0・build0。
+- **リンク監査（"他に機能不全がないか"）**：全hrefを洗い、内部ルート(/works /contact /privacy /links と動的/works/[slug])は全て実在＝壊れリンクなし。問題は「mailtoはPCでメール未設定だと無反応」の1類型のみで、全CTAを`/contact`へ寄せて解消。直メール表示は撤去（Gmail非公開のため）。
+- **教訓**：導線差し替えは共有レイアウト(Header/Footer/MobileFixedCTA)＋JsonLd＋data(site.ts)まで含めて`grep`で全網羅。個人アドレスは「表示」だけでなく「コード/データ/構造化データ」からも消す。受信先は非公開envに寄せる。

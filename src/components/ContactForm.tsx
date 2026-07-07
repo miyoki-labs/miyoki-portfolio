@@ -2,7 +2,6 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { FormEvent } from "react";
-import { site } from "@/data/site";
 
 // ビルド時にインライン化。未設定なら Turnstile ウィジェットは出さない（フォームは動く）。
 const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
@@ -63,8 +62,8 @@ export default function ContactForm() {
       <div className="rounded-2xl border border-neutral-200 bg-neutral-50 p-6 text-center">
         <p className="font-display text-lg font-semibold">送信しました。ありがとうございます。</p>
         <p className="mt-2 text-sm text-neutral-600">
-          通常2〜3営業日以内にご返信します。届かない場合はお手数ですが{" "}
-          <a href={`mailto:${site.email}`} className="underline">{site.email}</a> まで。
+          通常2〜3営業日以内にご返信します。しばらく経っても返信がない場合は、
+          恐れ入りますが再度お送りください。
         </p>
       </div>
     );
@@ -103,8 +102,7 @@ export default function ContactForm() {
       </button>
 
       <p className="text-xs text-neutral-500">
-        送信の代わりに直接メールでも受け付けています：{" "}
-        <a href={`mailto:${site.email}`} className="underline">{site.email}</a>
+        いただいた内容には通常2〜3営業日以内にご返信します。
       </p>
     </form>
   );

@@ -8,7 +8,7 @@ interface Env {
   CONTACT_FROM_EMAIL?: string   // 送信元（Resend検証済みドメイン。未設定なら onboarding@resend.dev）
 }
 
-const DEFAULT_TO = 'miyoki.43834@gmail.com'
+// 受信先はコードに置かず、非公開の env（CONTACT_TO_EMAIL）でのみ指定する
 const DEFAULT_FROM = 'Miyoki Labs <onboarding@resend.dev>'
 
 function json(data: unknown, status = 200): Response {
@@ -67,10 +67,10 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
   }
 
   // 送信（Resend。未設定なら送信できないので明示エラー）
-  if (!env.RESEND_API_KEY) {
-    return json({ error: '送信設定が未完了です。お手数ですがメールでご連絡ください' }, 503)
+  if (!env.RESEND_API_KEY || !env.CONTACT_TO_EMAIL) {
+    return json({ error: '送信を受け付けできませんでした。時間をおいて再度お試しください' }, 503)
   }
-  const to = env.CONTACT_TO_EMAIL ?? DEFAULT_TO
+  const to = env.CONTACT_TO_EMAIL
   const from = env.CONTACT_FROM_EMAIL ?? DEFAULT_FROM
 
   const res = await fetch('https://api.resend.com/emails', {
