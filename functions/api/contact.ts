@@ -41,6 +41,9 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
   const email = String(body.email ?? '').trim()
   const message = String(body.message ?? '').trim()
 
+  // Honeypot: 隠しフィールドが埋まっていたらボットとみなし、成功を装って無視する
+  if (String(body._hp ?? '').trim()) return json({ ok: true })
+
   // 入力検証（長さ・型・形式）
   if (!name || name.length > 100) return json({ error: 'お名前をご確認ください' }, 400)
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email) || email.length > 200) {

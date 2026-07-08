@@ -16,6 +16,13 @@
 
 > ※ 未実装：問い合わせフォーム（Resend後追い）、ブログ（pipeline/microCMS連携）。ブランド統一（miyoki_labs）反映は roadmap P1。以降はこのファイルに随時追記。
 
+## 2026-07-08（未commit分の発見・記録のみ）
+
+- `src/components/ContactForm.tsx`に**ハニーポット欄**（`_hp`という人間には見えない入力欄。ボットが埋めたら送信側で無視する想定のスパム対策）が追加された状態で未commitのまま残っていた。
+- `src/app/sitemap.ts`の`staticPaths`に`/contact`を追加（既存の問い合わせフォーム新設ぶんの追随、`/about`と`/privacy`の間に追加）。
+- いずれもいつのセッションで追加されたか本セッションでは特定できず。実装自体は完結して見える（フォーム送信時に`_hp`を含めて送信・非表示スタイル付与済み／sitemapへの`/contact`追加もシンプルな1行差分）。直近のcommit履歴（`feat: 受託問い合わせフォーム新設（F-1・mailto脱却）`）の続きの調整と推測される。
+- 本セッションはNompass監査対応中のため、commitの要否はユーザー確認後に判断する。
+
 ## 2026-07-04（`miyoki-labs.com` 取得反映）
 
 - 背景：`miyoki-labs.com` を Cloudflare Registrar で取得完了（当初はXserverドメイン迂回を計画していたが、決済不調が再試行で解消し不要になった）。ルート＝ポートフォリオ、`blog.miyoki-labs.com`＝別Astroプロジェクト（miyoki-blog）に割当。
@@ -71,3 +78,36 @@
 - **切り分けの効き**：エラー文に一時診断 `R/T`（envの有無・値は出さない）を仕込んだのが決定打。R=0=空/未バインド、R=1=値はあるが送信失敗、を即判別できた。wrangler.tomlの除去（next-on-pages残骸）も実施したが今回の主因ではなかった（=クリーンアップとして有効）。
 - **仕上げ**：件名を `【ポートフォリオ】お問い合わせ：<名>` → `【お問い合わせ】<名> 様`（受信側で意味不明な"ポートフォリオ"を除去＋様付け）。一時診断コードを撤去。
 - **教訓**：①`wrangler pages secret put`の対話入力は値が入ったか要確認（空でも"Success"が出る）。非機密値はType=Textで可視化して入れると事故らない。②静的export+CF Pages Functionsのenvは「本番/プレビュー」「secret空」「wrangler.toml優先」の3罠。詰まったらFunctionに"envの有無だけ"返す一時診断を入れて切り分けるのが最速。
+
+## 2026-07-08（公開前チェック棚卸し：Honeypot追加・README実態反映・sitemap補完）
+
+- **背景**：ポートフォリオ構築の次の一手を検討する中で、Nompass buildの`docs/04_launch.md`（公開前チェックリスト）基準で全体を棚卸し。フォーム・OGP・構造化データ・404・フェイルセーフは既に揃っていたが、フォーム標準4点セット（validation/HTMLエスケープ/Honeypot/Turnstile）のうちHoneypotだけ未実装と判明。
+- **対応**：①`ContactForm.tsx`に隠しHoneypotフィールド（`_hp`、`absolute left-[-9999px]`+`aria-hidden`）を追加、送信データに含める ②`functions/api/contact.ts`で`_hp`が埋まっていたら`{ok:true}`を返して黙って無視（ボットに気づかせない） ③`sitemap.ts`に`/contact`を追加（未掲載だった） ④`README.md`の「公開前チェック」「未実装」欄を実態に更新（問い合わせフォームは07-07に稼働済みなのに「未実装」表記のまま放置されていた＝ドキュメント腐敗）。
+- **検証**：`npx tsc --noEmit` exit 0。🖥️**要デプロイ**（`npm run deploy`）で本番反映。
+- **残**：README公開前チェックに🖥️週末PC項目として明記（Lighthouse/3幅実機確認・GSC/Bing登録）。`works.ts`のmiyoki-media-pipelineにrepo/demoリンクが無い（非公開ツールなら対応不要）。
+- **教訓**：READMEの「未実装」欄はknowledge-logより更新頻度が低く、実装が進んでも放置されがち。機能追加時はREADMEも同じセッションで見直す。
+
+## 2026-07-08（GSC/Bing登録状況の確定＝README訂正）
+
+- **経緯**：公開前チェックでGSC/Bingを一括りに「未登録の可能性」と誤って書いていた。ユーザーから正確な状況を確認：
+  - **GSC＝完了**：OAuth設定→`個人\seo-insights\gsc-report.mjs`で取得→Windowsタスクスケジューラで毎週金曜22:30に自動実行、稼働確認済み。
+  - **Bing＝部分完了で止まっている**：Bing Webmaster Toolsでサイト検証・サイトマップ送信は手動実施済み。ただし①インデックス完了確認はその後未実施（サイトマップが「Processing」だった時点から進捗未確認）②Bing Webmaster APIキーは保管済みだが、GSC同様の自動取得スクリプトは作っていない（作る予定もなし＝GSCの自動化で十分と判断）。
+- **対応**：README公開前チェックの当該行をGSC/Bing別立てに訂正し、上記の正確な状態を反映。
+- **教訓**：「証跡が見当たらない」＝「未実施」と決めつけない。手動作業はリポジトリ検索に残らないので、判断が割れる項目は本人に直接状態を確認する。
+
+## 2026-07-08（Bing Webmaster自動化を実装・稼働確認完了＝GSC/Bing対応完結）
+
+- **実装箇所**：`個人\seo-insights\gsc-report.mjs`（miyoki-portfolioとは別プロジェクトだが、同じSEOレポート運用の一部としてここに記録）。
+- **背景**：GSCは自動レポート化済みだったが、Bingは未実装（スクリプト冒頭コメントに「あればBing」と当初から想定はされていた）。ユーザーが「自動化はどちらもやりたい」「Bingもすぐ終わるなら」と希望。
+- **実装**：Bing Webmaster API（[GetQueryStats](https://bing-webmaster-api.analyticsedge.com/getquerystats/)/[GetPageStats](https://bing-webmaster-api.analyticsedge.com/getpagestats/)、エンドポイント`https://ssl.bing.com/webmaster/api.svc/json/{Method}?siteUrl=...&apikey=...`）を追加。BingはGSCと違い日付範囲指定不可・週次バケットで全期間返るため、`parseMsDate`でMicrosoft JSON日付を解析し直近28日分だけ自前集計（`aggregateBingRows`）してGSCと同じ形（keys/impressions/clicks/ctr/position）に揃え、既存の`findLowCtrHighImpression`/`findPageTwoThree`/`rowsToTable`をそのまま再利用。`.env.example`に`BING_API_KEY`/`BING_SITE_URL`追加。Windowsタスクスケジューラの変更は不要（既存の週次実行にそのまま乗る）。
+- **検証**：APIキー未設定時→Bingセクションを黙ってスキップし本体（GSC分）は正常動作を確認。ユーザーがAPIキーを`.env`に投入後→実際にBing APIへの通信が成功しレポート生成を確認（データ自体は「該当なし」＝新規ドメインでまだ実績が無いだけで想定通り）。
+- **副産物（Bing Webmaster Tools画面調査）**：①Sitemaps画面でサイトマップStatus=Success・12件検出を確認 ②URL Inspectionでトップページ=Indexed successfullyを確認 ③「alt属性が1箇所missing」という指摘は`src/app/page.tsx`のヒーロー背景ロゴ（装飾目的の`alt=""`）で、Bingの自動チェックが装飾画像と内容画像を区別できていないだけの誤検知と判断（対応不要。無理に文言を入れるとスクリーンリーダーが不要な読み上げをしてしまい逆に悪化する）。
+- **教訓**：①外部APIを新規に組み込むときは記憶に頼らずWeb検索で正確な仕様（特にレスポンス形式・粒度）を確認してから実装する。②自動SEOチェッカーの指摘は鵜呑みにせず、意図的な実装（装飾画像の空alt等）かどうかを先に見極める。
+
+## 2026-07-08（`/works`が「Discovered but not crawled」＝新規ドメインの正常な遅延と切り分け）
+
+- **発覚**：Bing URL Inspectionで`/works`が「Discovered but not crawled」「URL cannot appear on Bing」の赤表示。文言が強く問題に見えた。
+- **切り分け**：Bingbot UAを偽装してcurlで直接アクセスし、通常UAと比較。両方ともstatus 200・同一内容・`noindex`ヘッダーもメタタグもなし・`robots.txt`も許可済みと確認。技術的なブロック要因は無し。
+- **結論**：ドメイン取得・公開から日が浅い（発見日=07 Jul 2026＝前日）ため、単にBingのクロール優先度がまだ回ってきていないだけ（新規ドメインでは数日〜数週間かかるのが通常）。「issues preventing indexation」という文言は定型表示で、実害を示すものではない。
+- **対応**：ユーザーが優先ページ（`/works`・`/works/nompass`・`/works/accounting-tax-rag`・`/about`）すべてで「Request indexing」を実施済み。以降は自然にクロールされるのを待つのみ。
+- **教訓**：Bing/GSCの警告文言は強めに出ることがあるが、curlでUAを偽装して直接叩けば「本当にブロックされているか」「単に未クロールなだけか」を数秒で切り分けられる。新規ドメインでは"discovered/未crawl"は異常ではなくデフォルトの通過点。

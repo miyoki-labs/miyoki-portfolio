@@ -40,6 +40,7 @@ export default function ContactForm() {
           name: fd.get("name"),
           email: fd.get("email"),
           message: fd.get("message"),
+          _hp: fd.get("_hp"),
           turnstileToken,
         }),
       });
@@ -86,6 +87,16 @@ export default function ContactForm() {
         <label htmlFor="message" className="mb-1.5 block text-sm font-medium">ご相談内容 <span className="text-red-500">*</span></label>
         <textarea id="message" name="message" required maxLength={4000} rows={6} className={`${field} resize-y`} placeholder="RAG・業務自動化・AIアプリ開発など、お困りごとや実現したいことをお書きください。" />
       </div>
+
+      {/* Honeypot: 人間には見えない。ボットが埋めたら送信を無視する */}
+      <input
+        type="text"
+        name="_hp"
+        tabIndex={-1}
+        autoComplete="off"
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        aria-hidden="true"
+      />
 
       {TURNSTILE_SITE_KEY && (
         <div className="cf-turnstile" data-sitekey={TURNSTILE_SITE_KEY} />
