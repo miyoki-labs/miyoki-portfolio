@@ -23,24 +23,6 @@ export type Work = {
 
 export const works: Work[] = [
   {
-    slug: "nompass",
-    title: "Nompass — 小規模事業者向け AI × Web 成長支援",
-    category: "事業の立ち上げ・運営 / AIプロダクト（フラッグシップ）",
-    status: "公開中",
-    summary:
-      "無料の事業診断(Map)を起点に、HP制作・SNS発信・分析までをAIで回す事業。企画から実装・インフラ・決済・運用まで一人で立ち上げて運営しています。",
-    problem:
-      "小規模事業者は、Web制作も発信も分析も「やった方がいい」と分かっていても人手とコストで続きません。単発の制作で終わり、成果につながらないことが多いです。",
-    solution:
-      "無料の事業診断(Map)で事業情報を構造化し、それを起点にHP・SNS投稿・レポートを生成します。顧客は「確認と判断」に集中し、AIが工数を担う設計です。顧客ポータル・共通DB・決済まで含めて構築・運用しています。",
-    aiRole:
-      "Map診断・投稿生成・分析レポートをAIが担当します。ただしフォーマットが決まる項目（ID・期間・ステータス）はサーバー側で固定し、AIには自然文だけ生成させます（“AIに判断させない”守りの設計）。認証・テナント分離・レート制限・入力検証は共通部品で徹底しています。",
-    tech: ["Next.js 16", "React 19", "TypeScript", "Better Auth", "Neon / Drizzle", "Stripe", "Claude API", "Cloudflare Pages"],
-    result:
-      "「作れる」だけでなく「売って・運用できる」ことの証明です。実顧客のオンボーディング段階まで到達しました。設計・実装・インフラ・決済・運用を一人で回しています。",
-    links: { demo: "https://nompass.jp" },
-  },
-  {
     slug: "accounting-tax-rag",
     title: "経理・税務AIアシスタント（RAG）",
     category: "RAG / 業務ナレッジ",
@@ -94,6 +76,24 @@ export const works: Work[] = [
     result:
       "「続かない発信」を仕組みで支える方向の実装です。ブログ自動化パイプラインの土台にもなっています。",
     links: { repo: "https://github.com/miyoki-labs/writing-assistant" },
+  },
+  {
+    slug: "nompass",
+    title: "Nompass — 小規模事業者向け AI × Web 成長支援",
+    category: "事業の立ち上げ・運営 / AIプロダクト（フラッグシップ）",
+    status: "公開中",
+    summary:
+      "無料の事業診断(Map)を起点に、HP制作・SNS発信・分析までをAIで回す事業。企画から実装・インフラ・決済・運用まで一人で立ち上げて運営しています。",
+    problem:
+      "小規模事業者は、Web制作も発信も分析も「やった方がいい」と分かっていても人手とコストで続きません。単発の制作で終わり、成果につながらないことが多いです。",
+    solution:
+      "無料の事業診断(Map)で事業情報を構造化し、それを起点にHP・SNS投稿・レポートを生成します。顧客は「確認と判断」に集中し、AIが工数を担う設計です。顧客ポータル・共通DB・決済まで含めて構築・運用しています。",
+    aiRole:
+      "Map診断・投稿生成・分析レポートをAIが担当します。ただしフォーマットが決まる項目（ID・期間・ステータス）はサーバー側で固定し、AIには自然文だけ生成させます（“AIに判断させない”守りの設計）。認証・テナント分離・レート制限・入力検証は共通部品で徹底しています。",
+    tech: ["Next.js 16", "React 19", "TypeScript", "Better Auth", "Neon / Drizzle", "Stripe", "Claude API", "Cloudflare Pages"],
+    result:
+      "「作れる」だけでなく「売って・運用できる」ことの証明です。実顧客のオンボーディング段階まで到達しました。設計・実装・インフラ・決済・運用を一人で回しています。",
+    links: { demo: "https://nompass.jp" },
   },
   {
     slug: "miyoki-media-pipeline",
