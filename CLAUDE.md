@@ -2,8 +2,13 @@
 
 AIプロダクトエンジニアのポートフォリオサイト。「作れる人間である証明」を見せて受託相談につなげる入口。
 **AI業務自動化・ツール開発 ＋ Web/LP制作の両方をMiyoki個人で受ける**（2026-07-09改訂。Web/LPは `Nompass\build` 流用で完結する案件のみ）。Nompassは送客先ではなく**自分が展開しているプロダクト**。正＝`C:\Miyoki\計画\03_収益化.md`／直す順＝`計画\04_ポートフォリオ計画.md`。
-技術：Next.js 15 / React 19 / TypeScript / Tailwind / Cloudflare Pages（output:export → wrangler、`npm run deploy`）。
-実績＝`src/data/works.ts`、サイト設定＝`src/data/site.ts`。
+技術：Next.js 15 / React 19 / TypeScript / Tailwind / Cloudflare Pages（`@cloudflare/next-on-pages` + `wrangler`。デプロイ＝`npm run deploy`）。
+実績＝`src/data/works.ts`、サイト設定＝`src/data/site.ts`。実績ページの主役＝RAG / 提案文ジェネレーター / 執筆補助 / miyoki-media-pipeline 等の既存制作物。
+
+## Cloudflare注意点（Buildテンプレ由来の学び。事故防止）
+
+- `next/image` の最適化がCloudflareで効かない → **事前にWebP化**して配置
+- OGP標準・全ページCTA・ブランド404・初回真っ白フェイルセーフを踏襲
 
 ## 開発ログ（必須）
 
