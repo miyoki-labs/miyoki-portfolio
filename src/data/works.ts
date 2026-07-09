@@ -38,7 +38,10 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API", "bi-gram検索（依存ゼロ）"],
     result:
       "「AIが当てずっぽうで答えていない」ことを、根拠スタンプで目に見える形にしました。本番は Embeddings＋ベクトルDB へ拡張できます。",
-    links: { repo: "https://github.com/miyoki-labs/accounting-tax-rag-demo" },
+    links: {
+      demo: "https://accounting-tax-rag-demo.vercel.app",
+      repo: "https://github.com/miyoki-labs/accounting-tax-rag-demo",
+    },
   },
   {
     slug: "proposal-generator",
@@ -75,7 +78,10 @@ export const works: Work[] = [
     tech: ["React", "TypeScript", "Claude API（ストリーミング）"],
     result:
       "「続かない発信」を仕組みで支える方向の実装です。ブログ自動化パイプラインの土台にもなっています。",
-    links: { repo: "https://github.com/miyoki-labs/writing-assistant" },
+    links: {
+      demo: "https://writing-assistant-orpin.vercel.app",
+      repo: "https://github.com/miyoki-labs/writing-assistant",
+    },
   },
   {
     slug: "nompass",
@@ -128,7 +134,10 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API"],
     result:
       "現場の定型対応をAIで支える実例です。電話・SMS応対の自動化へ展開できます。",
-    links: { repo: "https://github.com/miyoki-labs/teleapo-demo" },
+    links: {
+      demo: "https://teleapo-demo.vercel.app",
+      repo: "https://github.com/miyoki-labs/teleapo-demo",
+    },
   },
   {
     slug: "numeric-counter",
