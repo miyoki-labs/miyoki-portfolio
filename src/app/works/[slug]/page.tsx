@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { ArrowLeft, ExternalLink, Code2, FileText } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
@@ -102,6 +103,21 @@ export default async function WorkDetail({
           </div>
         )}
       </FadeIn>
+
+      {work.image && (
+        <FadeIn>
+          <div className="relative mt-9 aspect-[16/10] overflow-hidden rounded-2xl border border-black/8 bg-neutral-50">
+            <Image
+              src={work.image}
+              alt={`${work.title} の画面`}
+              fill
+              sizes="(min-width: 768px) 48rem, 90vw"
+              priority
+              className="object-cover object-top"
+            />
+          </div>
+        </FadeIn>
+      )}
 
       <div className="mt-10">
         <Section label="課題">{work.problem}</Section>

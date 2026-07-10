@@ -19,6 +19,7 @@ export type Work = {
   tech: string[];
   result: string; // 結果・学び
   links?: WorkLink;
+  image?: string; // 実画面のスクショ（事前WebP化。無い実績はカードがテキストのみで成立する）
 };
 
 export const works: Work[] = [
@@ -28,7 +29,7 @@ export const works: Work[] = [
     category: "RAG / 業務ナレッジ",
     status: "デモ",
     summary:
-      "経費規程・税務・仕訳・雇用形態の4領域を横断し、根拠を示してから答える「説明可能なRAG」。",
+      "経費規程・税務・仕訳・雇用形態の4領域を横断し、どの資料に基づく答えかを必ず示すAIアシスタント。",
     problem:
       "中小企業の経理は1〜2名に属人化しがちです。ChatGPT連携だと“それっぽいけど根拠不明”な回答になりやすく、特に雇用形態（偽装請負リスク等）は誤った確信が一番危険です。",
     solution:
@@ -42,6 +43,7 @@ export const works: Work[] = [
       demo: "https://accounting-tax-rag-demo.vercel.app",
       repo: "https://github.com/miyoki-labs/accounting-tax-rag-demo",
     },
+    image: "/works/accounting-tax-rag.webp",
   },
   {
     slug: "proposal-generator",
@@ -61,6 +63,7 @@ export const works: Work[] = [
       demo: "https://proposal-generator-sand.vercel.app/",
       repo: "https://github.com/miyoki-labs/proposal-generator",
     },
+    image: "/works/proposal-generator.webp",
   },
   {
     slug: "writing-assistant",
@@ -82,6 +85,7 @@ export const works: Work[] = [
       demo: "https://writing-assistant-orpin.vercel.app",
       repo: "https://github.com/miyoki-labs/writing-assistant",
     },
+    image: "/works/writing-assistant.webp",
   },
   {
     slug: "nompass",
@@ -100,6 +104,7 @@ export const works: Work[] = [
     result:
       "「作れる」だけでなく「売って・運用できる」ことの証明です。実顧客のオンボーディング段階まで到達しました。設計・実装・インフラ・決済・運用を一人で回しています。",
     links: { demo: "https://nompass.jp" },
+    image: "/works/nompass.webp",
   },
   {
     slug: "miyoki-media-pipeline",
@@ -117,6 +122,7 @@ export const works: Work[] = [
     tech: ["React", "TypeScript", "Vite", "Cloudflare Functions", "Claude API"],
     result:
       "開発過程そのものが発信ネタになる、連載型のプロジェクトです。継続を仕組みで解く実例です。",
+    image: "/works/miyoki-media-pipeline.webp",
   },
   {
     slug: "teleapo-assistant",
@@ -138,6 +144,7 @@ export const works: Work[] = [
       demo: "https://teleapo-demo.vercel.app",
       repo: "https://github.com/miyoki-labs/teleapo-demo",
     },
+    image: "/works/teleapo-assistant.webp",
   },
   {
     slug: "numeric-counter",
@@ -156,6 +163,7 @@ export const works: Work[] = [
     result:
       "企画から公開まで一人でやり切りました。プロダクトを形にして出せる、という実例です。",
     links: { demo: "https://numerical-analysis-counter.web.app" },
+    image: "/works/numeric-counter.webp",
   },
 ];
 
