@@ -18,6 +18,11 @@ export type Work = {
   aiRole: string; // AIの使いどころ（どこを任せ、どこを人が握るか）
   tech: string[];
   result: string; // 結果・学び
+  metric: {
+    value: string;
+    unit: string;
+    note: string;
+  };
   links?: WorkLink;
   image?: string; // 実画面のスクショ（事前WebP化。無い実績はカードがテキストのみで成立する）
 };
@@ -39,6 +44,11 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API", "bi-gram検索（依存ゼロ）"],
     result:
       "「AIが当てずっぽうで答えていない」ことを、根拠スタンプで目に見える形にしました。本番は Embeddings＋ベクトルDB へ拡張できます。",
+    metric: {
+      value: "4",
+      unit: "領域",
+      note: "経費規程・税務・仕訳・雇用形態を1つの検索導線で横断",
+    },
     links: {
       demo: "https://accounting-tax-rag-demo.vercel.app",
       repo: "https://github.com/miyoki-labs/accounting-tax-rag-demo",
@@ -59,6 +69,11 @@ export const works: Work[] = [
       "下書き生成をAIに任せ、最終調整は人が握ります。完全自動ではなく「人が直す前提の高速化」に振っています。",
     tech: ["Next.js", "TypeScript", "Claude API"],
     result: "繰り返しの文書作成を短縮できます。営業支援モジュールとして転用の余地があります。",
+    metric: {
+      value: "[要記入]",
+      unit: "分 / 提案文1件",
+      note: "導入前後の作成時間を同じ条件で実測してください",
+    },
     links: {
       demo: "https://proposal-generator-sand.vercel.app/",
       repo: "https://github.com/miyoki-labs/proposal-generator",
@@ -81,6 +96,11 @@ export const works: Work[] = [
     tech: ["React", "TypeScript", "Claude API（ストリーミング）"],
     result:
       "「続かない発信」を仕組みで支える方向の実装です。ブログ自動化パイプラインの土台にもなっています。",
+    metric: {
+      value: "[要記入]",
+      unit: "分 / 記事1本",
+      note: "下書き作成前後の所要時間を同じ文字数で実測してください",
+    },
     links: {
       demo: "https://writing-assistant-orpin.vercel.app",
       repo: "https://github.com/miyoki-labs/writing-assistant",
@@ -103,6 +123,11 @@ export const works: Work[] = [
     tech: ["Next.js 16", "React 19", "TypeScript", "Better Auth", "Neon / Drizzle", "Stripe", "Claude API", "Cloudflare Pages"],
     result:
       "「作れる」だけでなく「売って・運用できる」ことの証明です。実顧客のオンボーディング段階まで到達しました。設計・実装・インフラ・決済・運用を一人で回しています。",
+    metric: {
+      value: "5",
+      unit: "領域",
+      note: "企画・実装・インフラ・決済・運用を一人で担当",
+    },
     links: { demo: "https://nompass.jp" },
     image: "/works/nompass.webp",
   },
@@ -122,6 +147,11 @@ export const works: Work[] = [
     tech: ["React", "TypeScript", "Vite", "Cloudflare Functions", "Claude API"],
     result:
       "開発過程そのものが発信ネタになる、連載型のプロジェクトです。継続を仕組みで解く実例です。",
+    metric: {
+      value: "6",
+      unit: "工程",
+      note: "キーワード入力から書き出しまでを1つのパイプラインに集約",
+    },
     image: "/works/miyoki-media-pipeline.webp",
   },
   {
@@ -140,6 +170,11 @@ export const works: Work[] = [
     tech: ["Next.js", "TypeScript", "Claude API"],
     result:
       "現場の定型対応をAIで支える実例です。電話・SMS応対の自動化へ展開できます。",
+    metric: {
+      value: "4",
+      unit: "段",
+      note: "状況分析・切り返し例・ポイント・次の一手を1画面で提示",
+    },
     links: {
       demo: "https://teleapo-demo.vercel.app",
       repo: "https://github.com/miyoki-labs/teleapo-demo",
@@ -162,6 +197,11 @@ export const works: Work[] = [
     tech: ["Vite", "React 19", "TypeScript", "Firebase", "Recharts"],
     result:
       "企画から公開まで一人でやり切りました。プロダクトを形にして出せる、という実例です。",
+    metric: {
+      value: "[要記入]",
+      unit: "分 / 日次記録1回",
+      note: "導入前後の記録・集計時間を同じ項目数で実測してください",
+    },
     links: { demo: "https://numerical-analysis-counter.web.app" },
     image: "/works/numeric-counter.webp",
   },

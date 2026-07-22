@@ -3,18 +3,48 @@
 @tailwind utilities;
 
 :root {
-  --background: #ffffff;
+  --background: #f5f5f3;
+  --paper: #ffffff;
   --foreground: #15161a;
-  /* メインカラー（AIプロダクトエンジニアらしい知的なインディゴ） */
+  --g1: #e7e7e3;
+  --g2: #c9c9c3;
+  --g3: #666660;
+  --g4: #3f403d;
   --brand: #4338ca;
   --brand-light: #5b50e6;
   --brand-dark: #2e2a8f;
-  /* 白背景で 4.5:1 を満たすアクセント */
   --brand-accent: #3730a3;
+  --hero-visual-start: #13112a;
+  --hero-visual-mid: #231e5e;
+  --hero-visual-end: #37309c;
+  --hero-visual-glow: rgba(91, 80, 230, 0.55);
+  --grid-dot: rgba(67, 56, 202, 0.10);
+  --shine: rgba(255, 255, 255, 0.35);
+  --pressed-shadow: rgba(0, 0, 0, 0.12);
+  --focus-ring: #15161a;
+  --focus-ring-contrast: #ffffff;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --display-xl-size: clamp(48px, 6.5vw, 92px);
+  --display-lg-size: clamp(34px, 4.2vw, 56px);
+  --display-md-size: clamp(22px, 2.4vw, 36px);
+  --lead-size: clamp(15px, 1.3vw, 17px);
+  --label-tag-size: clamp(11px, 0.8vw, 12px);
+  --space-section: clamp(48px, 7vw, 100px);
+  --space-section-major: clamp(72px, 10vw, 120px);
+  --space-page: clamp(56px, 8vw, 96px);
+  --space-content-gap: clamp(32px, 4vw, 48px);
+  --space-card-gap: clamp(16px, 2vw, 24px);
+
+  --fv-heading-duration: 0.82s;
+  --fv-media-duration: 0.88s;
+  --fv-line-stagger: 0.11s;
+  --fv-heading-distance: 26px;
+  --fv-media-scale: 1.045;
 }
 
-html, body {
-  /* 横スクロール防止（はみ出し要素があってもビューポート幅に収める） */
+html,
+body {
   overflow-x: clip;
   max-width: 100%;
 }
@@ -22,51 +52,159 @@ html, body {
 body {
   color: var(--foreground);
   background: var(--background);
-  /* 日本語を文節単位で折り返す（単語の途中で割れない）。Chrome等で有効、
-     非対応ブラウザは通常折り返しにフォールバック。keep-all は横はみ出しの
-     原因になるため使わない。 */
+  font-size: 15px;
+  line-height: 1.75;
+  word-break: normal;
   word-break: auto-phrase;
+  line-break: strict;
   overflow-wrap: break-word;
 }
 
-h1, h2, h3 {
-  letter-spacing: -0.02em;
+h1,
+h2,
+h3,
+.heading-wrap {
+  min-width: 0;
+  word-break: normal;
+  word-break: auto-phrase;
+  line-break: strict;
+}
+
+:where(a, button, input, textarea, select, [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid var(--focus-ring) !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 2px var(--focus-ring-contrast) !important;
 }
 
 @layer utilities {
   .text-balance {
     text-wrap: balance;
   }
+
+  .display-xl {
+    font-size: var(--display-xl-size);
+    font-weight: 900;
+    line-height: 0.95;
+    letter-spacing: -0.04em;
+  }
+
+  .display-lg {
+    font-size: var(--display-lg-size);
+    font-weight: 800;
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+  }
+
+  .display-md {
+    font-size: var(--display-md-size);
+    font-weight: 700;
+    line-height: 1.12;
+    letter-spacing: -0.015em;
+  }
+
+  .lead {
+    font-size: var(--lead-size);
+    font-weight: 400;
+    line-height: 1.9;
+  }
+
+  .label-tag {
+    font-family: var(--font-display), var(--font-sans), sans-serif;
+    font-size: var(--label-tag-size);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  .section-space { padding-block: var(--space-section); }
+  .section-space-major { padding-block: var(--space-section-major); }
+  .page-space { padding-block: var(--space-page); }
+  .content-gap { margin-top: var(--space-content-gap); }
+  .card-gap { gap: var(--space-card-gap); }
 }
 
-/* 薄いドットグリッド背景（ヒーロー用） */
+/* ヒーローのドット背景は A#10 の判定対象。承認前は現状を維持する。 */
 .grid-bg {
-  background-image: radial-gradient(rgba(67, 56, 202, 0.10) 1px, transparent 1px);
+  background-image: radial-gradient(var(--grid-dot) 1px, transparent 1px);
   background-size: 22px 22px;
 }
 
-/* ===== スクロールフェードイン（ScrollObserver.tsx と対） ===== */
-@keyframes fadeSlideUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+.hero-visual {
+  background: linear-gradient(135deg, var(--hero-visual-start), var(--hero-visual-mid), var(--hero-visual-end));
+}
+.hero-visual::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(closest-side at 68% 50%, var(--hero-visual-glow), transparent 75%);
 }
 
-/* JS 有効時のみ隠す（.anim は layout の早期スクリプトで付与）。
-   JS が動かなければ隠さない＝コンテンツが消えないフェイルセーフ。 */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 .anim .fade-in { opacity: 0; }
 .fade-in.is-visible {
-  animation: fadeSlideUp 0.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  animation: fadeSlideUp 0.6s var(--ease-out-expo) forwards;
 }
 .fade-in.delay-1 { animation-delay: 0.1s; }
 .fade-in.delay-2 { animation-delay: 0.2s; }
 .fade-in.delay-3 { animation-delay: 0.3s; }
 .fade-in.delay-4 { animation-delay: 0.45s; }
 
-/* ===== シャインボタン ===== */
+.fade-in-stagger > .fade-in:nth-child(1) { animation-delay: 0ms; }
+.fade-in-stagger > .fade-in:nth-child(2) { animation-delay: 80ms; }
+.fade-in-stagger > .fade-in:nth-child(3) { animation-delay: 160ms; }
+.fade-in-stagger > .fade-in:nth-child(4) { animation-delay: 240ms; }
+.fade-in-stagger > .fade-in:nth-child(5) { animation-delay: 320ms; }
+.fade-in-stagger > .fade-in:nth-child(6) { animation-delay: 400ms; }
+.fade-in-stagger > .fade-in:nth-child(7) { animation-delay: 480ms; }
+.fade-in-stagger > .fade-in:nth-child(8) { animation-delay: 560ms; }
+
+@keyframes fvHeadingLine {
+  from { opacity: 0; transform: translateY(var(--fv-heading-distance)); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fvMediaReveal {
+  from { opacity: 0; transform: scale(var(--fv-media-scale)); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.fv-heading__line { display: block; }
+.anim .fv-heading__line {
+  opacity: 0;
+  transform: translateY(var(--fv-heading-distance));
+}
+.fade-in.fv-heading.is-visible {
+  animation: none;
+  opacity: 1;
+  transform: none;
+}
+.fade-in.fv-heading.is-visible .fv-heading__line {
+  animation: fvHeadingLine var(--fv-heading-duration) var(--ease-out-expo) forwards;
+  animation-delay: var(--fv-line-delay);
+}
+.fv-heading__line:nth-child(1) { --fv-line-delay: 0ms; }
+.fv-heading__line:nth-child(2) { --fv-line-delay: var(--fv-line-stagger); }
+.fv-heading__line:nth-child(3) { --fv-line-delay: calc(var(--fv-line-stagger) * 2); }
+.fv-heading__line:nth-child(4) { --fv-line-delay: calc(var(--fv-line-stagger) * 3); }
+.fade-in.fv-media.is-visible {
+  animation: fvMediaReveal var(--fv-media-duration) var(--ease-out-expo) forwards;
+}
+
+.transition,
+.transition-colors,
+.transition-opacity {
+  transition-timing-function: var(--ease-out-expo);
+}
+
 .btn-shine {
   position: relative;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition: transform 0.2s var(--ease-out-expo), box-shadow 0.2s var(--ease-out-expo);
 }
 .btn-shine::after {
   content: "";
@@ -75,22 +213,33 @@ h1, h2, h3 {
   left: -120%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  background: linear-gradient(100deg, transparent, var(--shine), transparent);
   transform: skewX(-20deg);
-  transition: left 0.6s ease;
+  transition: left 0.6s var(--ease-out-expo);
 }
 .btn-shine:hover::after { left: 130%; }
 .btn-shine:active {
   transform: translateY(0) scale(0.97);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
-  transition: transform 0.08s ease, box-shadow 0.08s ease;
+  box-shadow: 0 2px 8px var(--pressed-shadow);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .anim .fade-in,
-  .fade-in.is-visible {
-    animation: none;
-    opacity: 1;
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
+
+  .anim .fade-in,
+  .fade-in.is-visible,
+  .anim .fv-heading__line {
+    animation: none !important;
+    opacity: 1;
+    transform: none;
+  }
+
   .btn-shine::after { display: none; }
 }

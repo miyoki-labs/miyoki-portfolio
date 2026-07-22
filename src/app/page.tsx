@@ -16,6 +16,8 @@ import {
 import FadeIn from "@/components/ui/FadeIn";
 import WorkCard from "@/components/WorkCard";
 import ArticleCard from "@/components/ArticleCard";
+import HeroHeading from "@/components/HeroHeading";
+import SectionHeading from "@/components/ui/SectionHeading";
 import { site } from "@/data/site";
 import { works } from "@/data/works";
 import { getArticles } from "@/data/articles";
@@ -77,28 +79,20 @@ export default async function Home() {
   return (
     <main>
       {/* ===== Hero ===== */}
-      <section className="grid-bg border-b border-black/5">
-        <div className="mx-auto grid max-w-5xl items-center gap-10 px-5 py-20 sm:py-28 lg:grid-cols-[1.25fr_0.75fr] lg:gap-10">
-          <FadeIn>
-            <p className="font-mono text-sm text-brand-accent">{site.role}</p>
-            {/* 句読点・「を｜形」の位置でだけ折り返す（語の途中で割れないように nowrap） */}
-            <h1 className="mt-4 font-display text-4xl font-black leading-[1.18] tracking-tight sm:text-6xl">
-              <span className="block">
-                <span className="whitespace-nowrap">創って、</span>
-                <span className="whitespace-nowrap">動かして、</span>
-                <span className="whitespace-nowrap">届ける。</span>
-              </span>
-              <span className="mt-1 block text-brand">
-                <span className="whitespace-nowrap">AIでプロダクトを</span>
-                <span className="whitespace-nowrap">形にする。</span>
-              </span>
+      <section className="grid-bg border-b border-g1">
+        <div className="section-space-major mx-auto grid max-w-5xl items-center gap-10 px-5 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,0.75fr)] lg:gap-10">
+          <div className="min-w-0">
+            <p className="fade-in font-mono text-sm text-brand-accent">{site.role}</p>
+            <h1 className="display-xl heading-wrap fade-in fv-heading mt-5 font-display">
+              <HeroHeading />
             </h1>
-            <p className="mt-6 max-w-xl text-base leading-relaxed text-foreground/70 sm:text-lg">
+            <p className="lead fade-in delay-2 mt-7 max-w-xl text-g3">
               {site.intro}
             </p>
-            <div className="mt-9 flex flex-wrap gap-3">
+            <div className="fade-in delay-3 mt-9 flex flex-wrap gap-3">
               <Link
                 href="/contact"
+                data-cta="hero-contact"
                 className="btn-shine inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3.5 text-sm font-medium text-white hover:bg-brand-light"
               >
                 <Mail size={18} />
@@ -106,23 +100,17 @@ export default async function Home() {
               </Link>
               <Link
                 href="/works"
-                className="inline-flex items-center gap-2 rounded-xl border border-black/10 px-6 py-3.5 text-sm font-medium hover:border-brand/40"
+                data-cta="hero-works"
+                className="inline-flex items-center gap-2 rounded-xl border border-g2 px-6 py-3.5 text-sm font-medium hover:border-brand/40"
               >
                 実績を見る
                 <ArrowRight size={16} />
               </Link>
             </div>
-          </FadeIn>
+          </div>
 
           {/* ブランドカード（右・デスクトップのみ）。MMロゴは mix-blend-screen で黒背景を抜く */}
-          <div className="relative hidden aspect-[4/3] w-full overflow-hidden rounded-3xl bg-gradient-to-br from-[#13112a] via-[#231e5e] to-[#37309c] lg:block">
-            <div
-              className="absolute inset-0"
-              style={{
-                background:
-                  "radial-gradient(closest-side at 68% 50%, rgba(91,80,230,0.55), transparent 75%)",
-              }}
-            />
+          <div className="hero-visual fade-in fv-media relative hidden aspect-[4/3] w-full overflow-hidden rounded-3xl lg:block">
             <Image
               src="/logo-mark.webp"
               alt=""
@@ -136,29 +124,27 @@ export default async function Home() {
       </section>
 
       {/* ===== 強み ===== */}
-      <section className="mx-auto max-w-5xl px-5 py-20">
+      <section className="section-space mx-auto max-w-5xl px-5">
         <FadeIn>
-          <p className="font-mono text-xs text-brand-accent">STRENGTHS</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-            制作から運用まで、一人で
-          </h2>
-          <p className="mt-3 max-w-2xl text-foreground/65">
-            企画から運用まで一人で構築。その実践例が、Nompassです。
-          </p>
+          <SectionHeading
+            label="Strengths"
+            title="制作から運用まで、一人で"
+            description="企画から運用まで一人で構築。その実践例が、Nompassです。"
+          />
         </FadeIn>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {strengths.map((s, i) => {
+        <div className="content-gap card-gap fade-in-stagger grid sm:grid-cols-2">
+          {strengths.map((s) => {
             const Icon = s.icon;
             return (
-              <FadeIn key={s.title} delay={((i % 2) + 1) as 1 | 2}>
-                <div className="flex h-full gap-4 rounded-2xl border border-black/8 bg-white p-6">
+              <FadeIn key={s.title}>
+                <div className="flex h-full gap-4 rounded-2xl border border-g1 bg-white p-6">
                   <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-indigo-50">
                     <Icon size={22} className="text-brand" strokeWidth={1.75} />
                   </div>
                   <div>
                     <h3 className="font-display text-base font-semibold">{s.title}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-foreground/65">
+                    <p className="mt-1.5 text-[15px] leading-relaxed text-g3">
                       {s.body}
                     </p>
                   </div>
@@ -170,18 +156,14 @@ export default async function Home() {
       </section>
 
       {/* ===== 実績ハイライト ===== */}
-      <section className="border-y border-black/5 bg-neutral-50/60">
-        <div className="mx-auto max-w-5xl px-5 py-20">
+      <section className="border-y border-g1 bg-white">
+        <div className="section-space mx-auto max-w-5xl px-5">
           <FadeIn>
             <div className="flex items-end justify-between gap-4">
-              <div>
-                <p className="font-mono text-xs text-brand-accent">WORKS</p>
-                <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-                  これまでの制作物
-                </h2>
-              </div>
+              <SectionHeading label="Works" title="これまでの制作物" />
               <Link
                 href="/works"
+                data-cta="works-index"
                 className="hidden shrink-0 items-center gap-1 text-sm font-medium text-brand-accent hover:underline sm:inline-flex"
               >
                 すべて見る
@@ -190,9 +172,9 @@ export default async function Home() {
             </div>
           </FadeIn>
 
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {highlight.map((w, i) => (
-              <FadeIn key={w.slug} delay={((i % 3) + 1) as 1 | 2 | 3}>
+          <div className="content-gap card-gap fade-in-stagger grid sm:grid-cols-2 lg:grid-cols-3">
+            {highlight.map((w) => (
+              <FadeIn key={w.slug}>
                 <WorkCard work={w} />
               </FadeIn>
             ))}
@@ -201,26 +183,23 @@ export default async function Home() {
       </section>
 
       {/* ===== 受託メニュー ===== */}
-      <section className="mx-auto max-w-5xl px-5 py-20">
+      <section className="section-space mx-auto max-w-5xl px-5">
         <FadeIn>
-          <p className="font-mono text-xs text-brand-accent">SERVICES</p>
-          <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-            ご相談いただけること
-          </h2>
-          <p className="mt-3 max-w-2xl text-foreground/65">
-            <span className="font-medium text-foreground">AI業務自動化・ツール開発</span>{" "}
-            に集中しています。少数・高単価で、テンプレとAIで短納期に。
-          </p>
+          <SectionHeading
+            label="Services"
+            title="ご相談いただけること"
+            description="AI業務自動化・ツール開発に集中しています。少数・高単価で、テンプレとAIで短納期に。"
+          />
         </FadeIn>
 
-        <div className="mt-10 grid gap-4 sm:grid-cols-2">
-          {services.map((s, i) => (
-            <FadeIn key={s.title} delay={((i % 2) + 1) as 1 | 2}>
-              <div className="rounded-2xl border border-black/8 bg-white p-6">
+        <div className="content-gap card-gap fade-in-stagger grid sm:grid-cols-2">
+          {services.map((s) => (
+            <FadeIn key={s.title}>
+              <div className="rounded-2xl border border-g1 bg-white p-6">
                 <h3 className="font-display text-base font-semibold text-brand-accent">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-sm leading-relaxed text-foreground/65">
+                <p className="mt-2 text-[15px] leading-relaxed text-g3">
                   {s.body}
                 </p>
               </div>
@@ -229,7 +208,7 @@ export default async function Home() {
         </div>
 
         <FadeIn>
-          <div className="mt-6 rounded-2xl border border-dashed border-brand/30 bg-indigo-50/40 p-6 text-sm text-foreground/70">
+          <div className="mt-6 rounded-2xl border border-dashed border-brand/30 bg-indigo-50/40 p-6 text-[15px] text-g3">
             Web・HP・LP制作は{" "}
             <a
               href={site.nompassUrl}
@@ -245,29 +224,27 @@ export default async function Home() {
       </section>
 
       {/* ===== 発信 ===== */}
-      <section className="border-t border-black/5 bg-neutral-50/60">
-        <div className="mx-auto max-w-5xl px-5 py-20">
+      <section className="border-t border-g1 bg-white">
+        <div className="section-space mx-auto max-w-5xl px-5">
           <FadeIn>
-            <p className="font-mono text-xs text-brand-accent">CHANNELS</p>
-            <h2 className="mt-2 font-display text-2xl font-semibold sm:text-3xl">
-              発信していること
-            </h2>
-            <p className="mt-3 max-w-2xl text-foreground/65">
-              開発ログ（Zenn）・技術解説（Qiita）・感じたこと（note）を発信しています。失敗や判断の経緯も含めています。
-            </p>
+            <SectionHeading
+              label="Channels"
+              title="発信していること"
+              description="開発ログ（Zenn）・技術解説（Qiita）・感じたこと（note）を発信しています。失敗や判断の経緯も含めています。"
+            />
           </FadeIn>
 
           {articles.length > 0 && (
-            <div className="mt-10 grid gap-4 sm:grid-cols-2">
-              {articles.map((a, i) => (
-                <FadeIn key={a.url} delay={((i % 2) + 1) as 1 | 2}>
+            <div className="content-gap card-gap fade-in-stagger grid sm:grid-cols-2">
+              {articles.map((a) => (
+                <FadeIn key={a.url}>
                   <ArticleCard article={a} />
                 </FadeIn>
               ))}
             </div>
           )}
 
-          <p className="mt-10 font-mono text-[11px] text-foreground/45">ACCOUNTS</p>
+          <p className="mt-10 font-mono text-[11px] text-g3">ACCOUNTS</p>
           <div className="mt-3 flex flex-wrap gap-3">
             {channels.map((c) => {
               const Icon = c.icon;
@@ -277,7 +254,7 @@ export default async function Home() {
                   href={site.links[c.key]}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 rounded-xl border border-black/10 bg-white px-4 py-2.5 text-sm font-medium hover:border-brand/40 hover:text-brand-accent"
+                  className="inline-flex items-center gap-2 rounded-xl border border-g2 bg-white px-4 py-2.5 text-sm font-medium hover:border-brand/40 hover:text-brand-accent"
                 >
                   <Icon size={17} strokeWidth={1.75} />
                   {c.label}
@@ -289,17 +266,19 @@ export default async function Home() {
       </section>
 
       {/* ===== CTA ===== */}
-      <section className="mx-auto max-w-5xl px-5 py-20">
+      <section className="section-space-major mx-auto max-w-5xl px-5">
         <FadeIn>
           <div className="rounded-3xl bg-brand px-8 py-14 text-center text-white sm:px-12">
-            <h2 className="font-display text-2xl font-semibold sm:text-3xl">
-              「やりたくない作業」を仕組みに。
-            </h2>
-            <p className="mx-auto mt-3 max-w-xl text-white/85">
-              RAG・業務自動化・AIアプリ開発のご相談を承っています。まずは気軽にどうぞ。
-            </p>
+            <SectionHeading
+              label="Start a project"
+              title="「やりたくない作業」を仕組みに。"
+              description="RAG・業務自動化・AIアプリ開発のご相談を承っています。まずは気軽にどうぞ。"
+              align="center"
+              inverse
+            />
             <Link
               href="/contact"
+              data-cta="footer-contact"
               className="btn-shine mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-semibold text-brand-accent hover:bg-white/90"
             >
               <Mail size={18} />

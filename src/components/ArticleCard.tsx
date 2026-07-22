@@ -4,7 +4,7 @@ import type { Article, ArticlePlatform } from "@/data/articles";
 const badge: Record<ArticlePlatform, { label: string; className: string }> = {
   zenn: { label: "Zenn", className: "bg-sky-50 text-sky-700" },
   qiita: { label: "Qiita", className: "bg-emerald-50 text-emerald-700" },
-  note: { label: "note", className: "bg-neutral-900 text-white" },
+  note: { label: "note", className: "bg-foreground text-white" },
 };
 
 function formatDate(iso: string): string {
@@ -21,7 +21,7 @@ export default function ArticleCard({ article }: { article: Article }) {
       href={article.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="group flex h-full flex-col rounded-2xl border border-black/8 bg-white p-5 transition hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5"
+      className="group flex h-full flex-col rounded-2xl border border-g1 bg-white p-5 transition hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5"
     >
       <div className="flex items-center gap-2">
         <span
@@ -29,7 +29,7 @@ export default function ArticleCard({ article }: { article: Article }) {
         >
           {b.label}
         </span>
-        <span className="font-mono text-[11px] text-foreground/45">
+        <span className="font-mono text-[11px] text-g3">
           {formatDate(article.publishedAt)}
         </span>
       </div>
@@ -38,7 +38,7 @@ export default function ArticleCard({ article }: { article: Article }) {
         {article.emoji && (
           <span className="text-xl leading-none">{article.emoji}</span>
         )}
-        <h3 className="line-clamp-2 font-display text-[15px] font-semibold leading-snug text-foreground/90 group-hover:text-brand-accent">
+        <h3 className="line-clamp-2 font-display text-[15px] font-semibold leading-snug text-foreground group-hover:text-brand-accent">
           {article.title}
         </h3>
       </div>

@@ -13,10 +13,10 @@ export default function WorkCard({ work }: { work: Work }) {
   return (
     <Link
       href={`/works/${work.slug}`}
-      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-black/8 bg-white transition hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5"
+      className="group flex h-full flex-col overflow-hidden rounded-2xl border border-g1 bg-white transition hover:border-brand/40 hover:shadow-lg hover:shadow-brand/5"
     >
       {work.image && (
-        <div className="relative aspect-[16/10] overflow-hidden border-b border-black/8 bg-neutral-50">
+        <div className="relative aspect-[16/10] overflow-hidden border-b border-g1 bg-background">
           <Image
             src={work.image}
             alt={`${work.title} の画面`}
@@ -44,7 +44,7 @@ export default function WorkCard({ work }: { work: Work }) {
         <h3 className="mt-3 font-display text-lg font-semibold leading-snug">
           {work.title}
         </h3>
-        <p className="mt-2 text-sm leading-relaxed text-foreground/65">
+        <p className="mt-2 text-[15px] leading-relaxed text-g3">
           {work.summary}
         </p>
 
@@ -52,11 +52,21 @@ export default function WorkCard({ work }: { work: Work }) {
           {work.tech.slice(0, 3).map((t) => (
             <span
               key={t}
-              className="rounded-md bg-neutral-100 px-2 py-0.5 text-[11px] text-foreground/60"
+              className="rounded-md bg-g1 px-2 py-0.5 text-[11px] text-g4"
             >
               {t}
             </span>
           ))}
+        </div>
+
+        <div className="mt-5 border-t border-g1 pt-4">
+          <p className="flex items-baseline gap-1.5 text-brand-accent">
+            <span className={work.metric.value === "[要記入]" ? "text-sm font-semibold" : "text-2xl font-bold"}>
+              {work.metric.value}
+            </span>
+            <span className="text-xs font-medium">{work.metric.unit}</span>
+          </p>
+          <p className="mt-1 text-xs leading-relaxed text-g3">{work.metric.note}</p>
         </div>
 
         <span className="mt-5 inline-flex items-center gap-1 text-sm font-medium text-brand-accent">

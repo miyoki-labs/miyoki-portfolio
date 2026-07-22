@@ -7,7 +7,7 @@ AI業務自動化・ツール開発の実績を見せて受託相談につなげ
 
 - Next.js 15 (App Router) + React 19 + TypeScript
 - Tailwind CSS（CSS変数でブランドカラー）
-- Cloudflare Pages（`@cloudflare/next-on-pages`）
+- Cloudflare Pages（静的export + Wrangler）
 - 実績データは `src/data/works.ts` に直書き（microCMSは未導入＝後追い可）
 
 ## セットアップ
@@ -24,12 +24,21 @@ npm run dev                         # http://localhost:3000
 - 実績の追加・編集: `src/data/works.ts`（1件 = 課題→作ったもの→AIの使いどころ→技術→結果）
 - ブランドカラー: `src/app/globals.css` の `--brand` 系
 
+## 計測・問い合わせ通知
+
+- `GA_MEASUREMENT_ID`: ビルド時に設定すると、SPA遷移のPVと `cta_click` / `tel_click` / `line_click` / `form_start` / `form_submit` をGA4へ送信する
+- `SLACK_NOTIFICATIONS_ENABLED=true` と `SLACK_WEBHOOK_URL`: Cloudflare Pages Functionsに両方を設定すると問い合わせをSlackへ通知する
+- Slack設定が未指定または `false` の場合はno-op。通知失敗時もResendのメール送信結果は成功のまま返す
+- 秘密値は `.env.local` やCloudflareのSecretsに置き、リポジトリへコミットしない
+
 ## 公開前チェック（Nompass build の作法準拠）
 
 - [x] `NEXT_PUBLIC_SITE_URL` を本番ドメインに設定（`site.ts`のフォールバックを`miyoki-labs.com`に変更済み。Cloudflare Pages側の環境変数を明示設定するのは任意）
 - [x] `public/og.png`（1200×630）を用意（実ロゴ＋ブランド色で生成済み）
 - [x] ロゴを WebP 化（`public/logo-avatar.webp` / `public/logo-mark.webp`、元PNGは `brand/`）
 - [x] 問い合わせフォーム（Cloudflare Pages Functions + Resend、Honeypot + Turnstile任意）稼働確認済み（2026-07-07）
+- [ ] GA4：Cloudflare Pagesのビルド環境へ `GA_MEASUREMENT_ID` を設定し、RealtimeでPV・CTAを確認
+- [ ] Slack通知：Functions環境へ `SLACK_NOTIFICATIONS_ENABLED=true` と `SLACK_WEBHOOK_URL` を設定し、テスト問い合わせを確認
 - [ ] 実績の公開URL / リポジトリ / 解説記事リンクを `works.ts` に追記（`miyoki-media-pipeline`が未記載）
 - [ ] ヒーローの一言（`site.ts` の tagline）を最終確認
 - [ ] 🖥️週末PC：Lighthouse（モバイル）・375/768/1280px実機確認

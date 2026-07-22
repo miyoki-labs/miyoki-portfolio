@@ -16,12 +16,12 @@ const media: LinkItem[] = [
 
 export default function LinkTree({ compact = false }: { compact?: boolean }) {
   const pad = compact ? "px-3 py-2" : "px-4 py-3";
-  const base = `block rounded-xl border ${pad} text-sm transition`;
+  const base = `block rounded-xl border border-g1 ${pad} text-sm transition`;
 
   const row = (label: string, note: string) => (
     <span className="flex items-center justify-between gap-3">
       <span className="font-medium text-foreground">{label}</span>
-      <span className="font-mono text-[11px] text-foreground/50">{note}</span>
+      <span className="font-mono text-[11px] text-g3">{note}</span>
     </span>
   );
 
@@ -33,19 +33,19 @@ export default function LinkTree({ compact = false }: { compact?: boolean }) {
           href={it.href}
           target="_blank"
           rel="noopener noreferrer"
-          className={`${base} border-black/10 hover:border-brand/40 hover:bg-neutral-50`}
+          className={`${base} hover:border-brand/40 hover:bg-background`}
         >
           {row(it.label, it.note)}
         </a>
       ))}
 
       {/* 関連事業（発信媒体ではないので区切って別扱い） */}
-      <p className="mt-2 px-1 font-mono text-[10px] text-foreground/40">関連事業</p>
+      <p className="mt-2 px-1 font-mono text-[10px] text-g3">関連事業</p>
       <a
         href={site.nompassUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className={`${base} border-black/10 bg-neutral-100 hover:border-brand/40`}
+        className={`${base} bg-g1 hover:border-brand/40`}
       >
         {row("Nompass", "Web・LP制作事業")}
       </a>

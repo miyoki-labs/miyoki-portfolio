@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function LinksPage() {
   return (
-    <main className="mx-auto max-w-md px-5 py-16">
+    <main className="page-space mx-auto max-w-md px-5">
       <div className="text-center">
         <Image
           src="/logo-avatar.webp"
@@ -20,9 +20,9 @@ export default function LinksPage() {
           priority
           className="mx-auto h-18 w-18 rounded-full"
         />
-        <h1 className="mt-4 font-display text-2xl font-bold">{site.name}</h1>
+        <h1 className="display-md heading-wrap mt-4 font-display">{site.name}</h1>
         <p className="mt-1 font-mono text-xs text-brand-accent">{site.role}</p>
-        <p className="mt-4 text-sm text-foreground/60">
+        <p className="mt-4 text-[15px] text-g3">
           各媒体はこちらで検索 →{" "}
           <span className="font-mono font-semibold text-brand-accent">{site.handle}</span>
         </p>

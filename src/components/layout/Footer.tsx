@@ -12,13 +12,13 @@ const channels: { href: string; label: string }[] = [
 
 export default function Footer() {
   return (
-    <footer className="mt-24 border-t border-black/5 bg-neutral-50">
+    <footer className="mt-24 border-t border-g1 bg-white">
       <div className="mx-auto max-w-5xl px-5 py-12">
         <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:justify-between">
           <div>
             <p className="font-display text-lg font-semibold">{site.name}</p>
             <p className="mt-1 font-mono text-xs text-brand-accent">{site.role}</p>
-            <p className="mt-3 max-w-xs text-sm text-foreground/60">
+            <p className="mt-3 max-w-xs text-[15px] text-g3">
               AI業務自動化・ツール開発のご相談は{" "}
               <Link href="/contact" className="text-brand-accent underline underline-offset-2">
                 お問い合わせ
@@ -39,7 +39,8 @@ export default function Footer() {
           <div className="flex flex-col gap-3 text-sm">
             <Link
               href="/contact"
-              className="text-foreground/70 hover:text-foreground"
+              data-cta="footer-link-contact"
+              className="text-g4 hover:text-foreground"
             >
               お問い合わせ
             </Link>
@@ -50,7 +51,7 @@ export default function Footer() {
                   href={c.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-foreground/70 hover:text-brand-accent"
+                  className="text-g4 hover:text-brand-accent"
                 >
                   {c.label}
                 </a>
@@ -59,13 +60,13 @@ export default function Footer() {
             <Link href="/links" className="font-mono text-xs text-brand-accent hover:underline">
               各媒体はこちらで検索 → {site.handle}
             </Link>
-            <Link href="/privacy" className="text-foreground/50 hover:text-foreground">
+            <Link href="/privacy" className="text-g3 hover:text-foreground">
               プライバシーポリシー
             </Link>
           </div>
         </div>
 
-        <p className="mt-10 text-xs text-foreground/40">
+        <p className="mt-10 text-xs text-g3">
           © {new Date().getFullYear()} {site.name}
         </p>
       </div>

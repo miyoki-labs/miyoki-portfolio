@@ -20,7 +20,7 @@ export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-black/5 bg-white/80 backdrop-blur">
+    <header className="sticky top-0 z-40 border-b border-g1 bg-white/90 backdrop-blur">
       <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-3.5">
         <Link
           href="/"
@@ -50,7 +50,7 @@ export default function Header() {
           {!isHome && (
             <Link
               href="/"
-              className="rounded-lg px-3 py-2 text-sm text-foreground/60 hover:text-foreground"
+              className="rounded-lg px-3 py-2 text-sm text-g3 hover:text-foreground"
             >
               ← トップ
             </Link>
@@ -59,7 +59,7 @@ export default function Header() {
             <Link
               key={item.href}
               href={item.href}
-              className="rounded-lg px-3 py-2 text-sm text-foreground/70 hover:text-foreground"
+              className="rounded-lg px-3 py-2 text-sm text-g4 hover:text-foreground"
             >
               {item.label}
             </Link>
@@ -70,7 +70,7 @@ export default function Header() {
               type="button"
               onClick={() => setLinksOpen((v) => !v)}
               aria-expanded={linksOpen}
-              className="rounded-lg px-3 py-2 text-sm text-foreground/70 hover:text-foreground"
+              className="rounded-lg px-3 py-2 text-sm text-g4 hover:text-foreground"
             >
               リンク集
             </button>
@@ -81,7 +81,7 @@ export default function Header() {
                   onClick={() => setLinksOpen(false)}
                   aria-hidden
                 />
-                <div className="absolute right-0 top-full z-50 mt-1 w-72 rounded-xl border border-black/10 bg-white p-3 shadow-lg">
+                <div className="absolute right-0 top-full z-50 mt-1 w-72 rounded-xl border border-g2 bg-white p-3 shadow-lg">
                   <p className="px-1 pb-2 font-mono text-[11px] text-brand-accent">
                     各媒体はこちらで検索 → {site.handle}
                   </p>
@@ -95,6 +95,7 @@ export default function Header() {
 
           <Link
             href="/contact"
+            data-cta="header-contact"
             className="ml-1 rounded-lg bg-brand px-3.5 py-2 text-sm font-medium text-white hover:bg-brand-light"
           >
             相談する
@@ -107,7 +108,7 @@ export default function Header() {
           onClick={() => setMenuOpen((v) => !v)}
           aria-label="メニュー"
           aria-expanded={menuOpen}
-          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-foreground/70 hover:bg-black/5 sm:hidden"
+          className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg text-g4 hover:bg-g1 sm:hidden"
         >
           {menuOpen ? <X size={20} /> : <Menu size={20} />}
         </button>
@@ -115,13 +116,13 @@ export default function Header() {
 
       {/* モバイル：展開メニュー */}
       {menuOpen && (
-        <nav className="border-t border-black/5 bg-white px-5 pb-3 pt-1 sm:hidden">
+        <nav className="border-t border-g1 bg-white px-5 pb-3 pt-1 sm:hidden">
           {nav.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="block rounded-lg px-2 py-2.5 text-sm text-foreground/80 hover:bg-black/5"
+              className="block rounded-lg px-2 py-2.5 text-sm text-g4 hover:bg-g1"
             >
               {item.label}
             </Link>
@@ -129,12 +130,13 @@ export default function Header() {
           <Link
             href="/links"
             onClick={() => setMenuOpen(false)}
-            className="block rounded-lg px-2 py-2.5 text-sm text-foreground/80 hover:bg-black/5"
+            className="block rounded-lg px-2 py-2.5 text-sm text-g4 hover:bg-g1"
           >
             リンク集
           </Link>
           <Link
             href="/contact"
+            data-cta="mobile-menu-contact"
             onClick={() => setMenuOpen(false)}
             className="mt-1 block rounded-lg bg-brand px-2 py-2.5 text-center text-sm font-medium text-white hover:bg-brand-light"
           >

@@ -10,18 +10,18 @@ export const metadata: Metadata = {
 
 export default function WorksPage() {
   return (
-    <main className="mx-auto max-w-5xl px-5 py-16 sm:py-20">
+    <main className="page-space mx-auto max-w-5xl px-5">
       <FadeIn>
         <p className="font-mono text-xs text-brand-accent">WORKS</p>
-        <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">実績</h1>
-        <p className="mt-3 max-w-2xl text-foreground/65">
+        <h1 className="display-lg heading-wrap mt-3 font-display">実績</h1>
+        <p className="lead mt-4 max-w-2xl text-g3">
           AIをどこに使い、どこを人が握ったか。課題から結果までを1件ずつ書いています。
         </p>
       </FadeIn>
 
-      <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {works.map((w, i) => (
-          <FadeIn key={w.slug} delay={((i % 3) + 1) as 1 | 2 | 3}>
+      <div className="content-gap card-gap fade-in-stagger grid sm:grid-cols-2 lg:grid-cols-3">
+        {works.map((w) => (
+          <FadeIn key={w.slug}>
             <WorkCard work={w} />
           </FadeIn>
         ))}

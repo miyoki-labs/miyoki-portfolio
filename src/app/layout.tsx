@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Noto_Sans_JP, JetBrains_Mono } from "next/font/google";
+import { Inter, Noto_Sans_JP, JetBrains_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import ScrollObserver from "@/components/ScrollObserver";
@@ -7,6 +7,7 @@ import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import MobileFixedCTA from "@/components/layout/MobileFixedCTA";
 import JsonLd from "@/components/seo/JsonLd";
+import AnalyticsListener from "@/components/AnalyticsListener";
 import { site } from "@/data/site";
 
 const fontSans = Noto_Sans_JP({
@@ -16,10 +17,9 @@ const fontSans = Noto_Sans_JP({
   variable: "--font-sans",
 });
 
-// 見出しもゴシックで統一（OG画像と同系統）。本文より重いウェイトで差をつける。
-const fontDisplay = Noto_Sans_JP({
+// 英数字は Inter、日本語は font-sans の Noto Sans JP にフォールバックする和欧混植。
+const fontDisplay = Inter({
   subsets: ["latin"],
-  weight: ["700", "900"],
   display: "swap",
   variable: "--font-display",
 });
@@ -57,7 +57,8 @@ export const metadata: Metadata = {
   },
 };
 
-const GA_ID = process.env.GA_MEASUREMENT_ID;
+const rawGaId = process.env.GA_MEASUREMENT_ID;
+const GA_ID = rawGaId && /^G-[A-Z0-9]+$/i.test(rawGaId) ? rawGaId : undefined;
 
 export default function RootLayout({
   children,
@@ -78,6 +79,7 @@ export default function RootLayout({
         />
         <JsonLd />
         <ScrollObserver />
+        <AnalyticsListener />
         <Header />
         {children}
         <Footer />
@@ -85,13 +87,13 @@ export default function RootLayout({
 
         {GA_ID && (
           <>
+            <Script id="ga4-init" strategy="beforeInteractive">
+              {`window.dataLayer=window.dataLayer||[];window.gtag=function(){window.dataLayer.push(arguments)};window.gtag('js',new Date());window.gtag('config','${GA_ID}',{send_page_view:false});`}
+            </Script>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
               strategy="afterInteractive"
             />
-            <Script id="ga4-init" strategy="afterInteractive">
-              {`window.dataLayer = window.dataLayer || [];function gtag(){dataLayer.push(arguments);}gtag('js', new Date());gtag('config', '${GA_ID}');`}
-            </Script>
           </>
         )}
       </body>

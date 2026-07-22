@@ -6,6 +6,8 @@ interface Env {
   RESEND_API_KEY?: string
   CONTACT_TO_EMAIL?: string     // 送信先（未設定なら既定の連絡先）
   CONTACT_FROM_EMAIL?: string   // 送信元（Resend検証済みドメイン。未設定なら onboarding@resend.dev）
+  SLACK_NOTIFICATIONS_ENABLED?: string
+  SLACK_WEBHOOK_URL?: string
 }
 
 // 受信先はコードに置かず、非公開の env（CONTACT_TO_EMAIL）でのみ指定する
@@ -27,7 +29,28 @@ function escapeHtml(s: string): string {
     .replace(/"/g, '&quot;')
 }
 
-export async function onRequestPost(ctx: { request: Request; env: Env }): Promise<Response> {
+async function notifySlack(env: Env, name: string, email: string, message: string): Promise<void> {
+  if (env.SLACK_NOTIFICATIONS_ENABLED !== 'true' || !env.SLACK_WEBHOOK_URL) return
+
+  try {
+    const response = await fetch(env.SLACK_WEBHOOK_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        text: `ポートフォリオにお問い合わせが届きました\nお名前: ${name}\nメール: ${email}\n内容:\n${message}`,
+      }),
+    })
+    if (!response.ok) console.error('Slack notification failed', { status: response.status })
+  } catch {
+    console.error('Slack notification failed', { status: 'network-error' })
+  }
+}
+
+export async function onRequestPost(ctx: {
+  request: Request
+  env: Env
+  waitUntil?: (promise: Promise<unknown>) => void
+}): Promise<Response> {
   const { request, env } = ctx
 
   let body: Record<string, unknown>
@@ -75,6 +98,7 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
   }
   const to = env.CONTACT_TO_EMAIL
   const from = env.CONTACT_FROM_EMAIL ?? DEFAULT_FROM
+  const safeSubjectName = name.replace(/[\r\n]+/g, ' ')
 
   const res = await fetch('https://api.resend.com/emails', {
     method: 'POST',
@@ -86,7 +110,7 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
       from,
       to: [to],
       reply_to: email,
-      subject: `【お問い合わせ】${name} 様`,
+      subject: `【お問い合わせ】${safeSubjectName} 様`,
       html:
         `<p><strong>お名前</strong>：${escapeHtml(name)}</p>` +
         `<p><strong>メール</strong>：${escapeHtml(email)}</p>` +
@@ -97,5 +121,10 @@ export async function onRequestPost(ctx: { request: Request; env: Env }): Promis
   if (!res.ok) {
     return json({ error: '送信に失敗しました。時間をおいて再度お試しください' }, 502)
   }
+
+  const slackNotification = notifySlack(env, name, email, message)
+  if (ctx.waitUntil) ctx.waitUntil(slackNotification)
+  else await slackNotification
+
   return json({ ok: true })
 }

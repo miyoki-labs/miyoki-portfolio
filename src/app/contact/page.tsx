@@ -9,9 +9,9 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <main className="mx-auto max-w-2xl px-5 py-16 sm:py-20">
-      <h1 className="font-display text-3xl font-bold">お問い合わせ・ご相談</h1>
-      <p className="mt-3 leading-relaxed text-foreground/70">
+    <main className="page-space mx-auto max-w-2xl px-5">
+      <h1 className="display-lg heading-wrap font-display">お問い合わせ・ご相談</h1>
+      <p className="lead mt-4 text-g3">
         RAG・業務自動化・AIアプリ開発など、AI導入のご相談を承っています。
         「まず何ができるか整理したい」段階でもお気軽にどうぞ。
       </p>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Mail } from "lucide-react";
 import FadeIn from "@/components/ui/FadeIn";
 import { site } from "@/data/site";
+import SectionHeading from "@/components/ui/SectionHeading";
 
 export const metadata: Metadata = {
   title: "プロフィール",
@@ -26,17 +27,17 @@ const values = [
 
 export default function AboutPage() {
   return (
-    <main className="mx-auto max-w-3xl px-5 py-16 sm:py-20">
+    <main className="page-space mx-auto max-w-3xl px-5">
       <FadeIn>
         <p className="font-mono text-xs text-brand-accent">ABOUT</p>
-        <h1 className="mt-2 font-display text-3xl font-bold sm:text-4xl">
+        <h1 className="display-lg heading-wrap mt-3 font-display">
           {site.name}
         </h1>
         <p className="mt-2 font-mono text-sm text-brand-accent">{site.role}</p>
       </FadeIn>
 
       <FadeIn>
-        <div className="mt-8 space-y-4 leading-relaxed text-foreground/80">
+        <div className="lead mt-8 space-y-4 text-g4">
           <p>
             AIを活用して、企画から制作・運用までプロダクトを形にしています。
             RAG・業務自動化・AIアプリ開発が得意です。
@@ -52,14 +53,14 @@ export default function AboutPage() {
       </FadeIn>
 
       <FadeIn>
-        <h2 className="mt-12 font-display text-xl font-semibold">大事にしていること</h2>
+        <SectionHeading label="Values" title="大事にしていること" compact className="mt-12" />
         <div className="mt-5 space-y-4">
           {values.map((v) => (
-            <div key={v.title} className="rounded-2xl border border-black/8 bg-white p-6">
+            <div key={v.title} className="rounded-2xl border border-g1 bg-white p-6">
               <h3 className="font-display text-base font-semibold text-brand-accent">
                 {v.title}
               </h3>
-              <p className="mt-2 text-sm leading-relaxed text-foreground/70">{v.body}</p>
+              <p className="mt-2 text-[15px] leading-relaxed text-g3">{v.body}</p>
             </div>
           ))}
         </div>
@@ -69,6 +70,7 @@ export default function AboutPage() {
         <div className="mt-12 flex flex-wrap gap-3">
           <Link
             href="/contact"
+            data-cta="about-contact"
             className="btn-shine inline-flex items-center gap-2 rounded-xl bg-brand px-6 py-3 text-sm font-medium text-white hover:bg-brand-light"
           >
             <Mail size={18} />
@@ -76,7 +78,7 @@ export default function AboutPage() {
           </Link>
           <Link
             href="/works"
-            className="inline-flex items-center gap-2 rounded-xl border border-black/10 px-6 py-3 text-sm font-medium hover:border-brand/40"
+            className="inline-flex items-center gap-2 rounded-xl border border-g2 px-6 py-3 text-sm font-medium hover:border-brand/40"
           >
             実績を見る
           </Link>
